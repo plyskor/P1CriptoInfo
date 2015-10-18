@@ -12,7 +12,7 @@ int conv_ascii(int l){
         }
   if(l<97 || l>122){
      printf("ERROR, esto no es una letra\n");
-     return(0);
+     return(-1);
   }
   l-=97;
   return(l);
@@ -27,6 +27,17 @@ int cifra_vigenere(int plano , int clave , int m){
         }
   cifrado+=97; //Para pasarlo a ascii
   return cifrado;
+
+}
+int descifra_vigenere(int cifrado , int clave , int m){
+  int descifrado;
+  descifrado = mod(cifrado - clave , m);
+        if(descifrado==26){
+            descifrado=32;
+            return descifrado;
+        }
+  descifrado+=97; //Para pasarlo a ascii
+  return descifrado;
 
 }
 
@@ -65,6 +76,30 @@ int main (int argc,char *argv[]) {
 
         claveInt = conv_ascii(aux);
         cifrado = cifra_vigenere(l , claveInt ,m);
+                        if(cifrado==-1) continue;
+        fprintf(out,"%c",cifrado);
+        i++;
+      if(i==size) i=0;
+      }
+      fclose(f);
+      fclose(out);
+      free(clave);
+      return (0);
+    }
+        if(strcmp(argv[1],"-D")==0){
+      FILE *f , *out;
+      f= fopen(argv[7],"r");
+      out = fopen(argv[9] , "w");
+      while(!feof(f)){
+        l =fgetc(f);
+        if(l == -1){
+            break;
+        }
+        l = conv_ascii(l);
+        aux = (int)clave[i];
+
+        claveInt = conv_ascii(aux);
+        cifrado = descifra_vigenere(l , claveInt ,m);
         fprintf(out,"%c",cifrado);
         i++;
       if(i==size) i=0;
