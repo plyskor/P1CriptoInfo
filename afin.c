@@ -10,7 +10,7 @@ void init_mpz_vector(mpz_t *vector,int size);
 
 int cifra_caracter_afin(int cha, mpz_t a, mpz_t b , mpz_t m){
   int cint;
-
+  printf("leo: %d\n",cha);
   if(cha>64 && cha<91){
     cha+=32;
   }
@@ -35,12 +35,12 @@ int cifra_caracter_afin(int cha, mpz_t a, mpz_t b , mpz_t m){
   mpz_cdiv_qr(x,mod,c,m);
   //gmp_printf("modulo \n");
   if(mpz_cmp_ui(mod,0)<0){
-    mpz_set_ui(aux,27);
-    mpz_add(mod,mod,aux);
+    
+    mpz_add(mod,mod,m);
   }
 
   cint = mpz_get_ui(mod);
-
+  printf("Cifro: %d\n",cint);
   cint+=97;
 
   mpz_clear(c);
@@ -52,6 +52,7 @@ int cifra_caracter_afin(int cha, mpz_t a, mpz_t b , mpz_t m){
 }
 
 int descifra_caracter_afin(int cha, mpz_t a, mpz_t b , mpz_t m){
+    
   int cifint=0;
   mpz_t cif;
   if(cha>64 && cha<91){
@@ -71,6 +72,8 @@ int descifra_caracter_afin(int cha, mpz_t a, mpz_t b , mpz_t m){
 
   cifint = mpz_get_ui(cif);
   mpz_clear(cif);
+  printf("Aqui estoy  %d\n", cifint);
+  cifint+=97;
   return cifint;
 
 }
@@ -202,14 +205,16 @@ int main (int argc,char *argv[]) {
         break;
       }
   
-      if(strcmp(argv[1],"-C")==0){
+     if(strcmp(argv[1],"-C")==0){
     //El programa cifra 
       cint=cifra_caracter_afin(pint,a,b,m); 
 
     }else if(strcmp(argv[1],"-D")==0){
       cint = descifra_caracter_afin(pint, inva, b ,m);
     }
+    printf("Aqui estoy antes de escribir %d\n", cint);
     fprintf(out,"%c",cint);
+    }
     fclose(f);
     fclose(out);
     mpz_clear(a);
@@ -218,8 +223,8 @@ int main (int argc,char *argv[]) {
     mpz_clear(inva);
     mpz_clear(invb);
     mpz_clear(mcd);
-    return(0);
+    
 
-  }
+  
   return(0);
 }
