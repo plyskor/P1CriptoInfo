@@ -30,7 +30,7 @@ int cifra_caracter_afin(int cha, mpz_t a, mpz_t b , mpz_t m){
 
   mpz_set_ui(p,cha);
   mpz_mul(aux,a,p);
-gmp_printf("modulo \n");
+
   mpz_add(c,aux,b);
   mpz_cdiv_qr(x,mod,c,m);
   //gmp_printf("modulo \n");
@@ -49,6 +49,30 @@ gmp_printf("modulo \n");
   mpz_clear(mod);
   mpz_clear(p);
   return cint;
+}
+
+int descifra_caracter_afin(int cha, mpz_t a, mpz_t b , mpz_t m){
+  int cifint=0;
+  mpz_t cif;
+  if(cha>64 && cha<91){
+    cha+=32;
+  }
+  if(cha<97 || cha>122){
+    if(cha != 32){
+      printf("ERROR, esto no es una letra\n");
+      return(0);
+    }
+  }
+
+  mpz_init_set_ui(cif,cha);
+  mpz_sub(cif,cif,b);
+  mpz_mul(cif, cif,a);
+  mpz_mod(cif,cif,m);
+
+  cifint = mpz_get_ui(cif);
+  mpz_clear(cif);
+  return cifint;
+
 }
 
 void euclidesExtendido(const mpz_t a, const mpz_t b,mpz_t mcd, mpz_t s, mpz_t t){
@@ -137,9 +161,8 @@ int main (int argc,char *argv[]) {
     return(0);
   }
 
-  if(strcmp(argv[1],"-C")==0){
-    //El programa cifra 
-     mpz_init_set_str(a,argv[5],10);
+
+ mpz_init_set_str(a,argv[5],10);
      mpz_init_set_str(m,argv[3],10);
      mpz_init_set_str(b,argv[7],10);
      mpz_init(mcd);
@@ -162,25 +185,31 @@ int main (int argc,char *argv[]) {
     //abro los ficheros
     FILE *f;
     FILE *out;
+    f = fopen(argv[9], "r");
+    out = fopen(argv[11] , "w");
+
+
+  
+    
     int pint;
     char cint;
 
-    f = fopen(argv[9], "r");
-    out = fopen(argv[11] , "w");
+    
 
     while(!feof(f)){
       pint=fgetc(f);
       if(pint == -1){
         break;
       }
-      printf("pint : %d\n", pint);
+  
+      if(strcmp(argv[1],"-C")==0){
+    //El programa cifra 
+      cint=cifra_caracter_afin(pint,a,b,m); 
 
-      cint=cifra_caracter_afin(pint,a,b,m);
-      
-      fprintf(out,"%c",cint);
-
+    }else if(strcmp(argv[1],"-D")==0){
+      cint = descifra_caracter_afin(pint, inva, b ,m);
     }
-
+    fprintf(out,"%c",cint);
     fclose(f);
     fclose(out);
     mpz_clear(a);
