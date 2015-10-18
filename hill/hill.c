@@ -22,5 +22,12 @@ int main (int argc,char *argv[]) {
     K=initMatrix(n);
     setValue(K,1,2,23);
     printf("%d\n",getValue(K,1,2));
+    fmatrix=fopen(argv[7],"r");
+    if(!fmatrix){
+        printf("Error al abrir el archivo %s\n",argv[7]);
+        return -1;
+    }
+    readMatrix(fmatrix,K);
+    printMatrix(K);
     return(0);
 }
