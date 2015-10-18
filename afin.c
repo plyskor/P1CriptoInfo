@@ -64,6 +64,7 @@ int descifra_caracter_afin(int cha, mpz_t a, mpz_t b , mpz_t m){
       return(0);
     }
   }
+  cha-=97;
 
   mpz_init_set_ui(cif,cha);
   mpz_sub(cif,cif,b);
