@@ -22,7 +22,10 @@ void setValue(matrix *m,const int fila,const int col, const int value);
 int getValue(matrix *m,const int fila,const int col);
 void readMatrix(FILE *in, matrix *m);
 void printMatrix(matrix *m);
-
+void copyMatrix(matrix* src, matrix *dest);
+int detMatrix(matrix *m);
+void eraseMatrix(matrix *m);
+void exchangeRows(matrix *m, int f1, int f2);
 #ifdef	__cplusplus
 }
 #endif

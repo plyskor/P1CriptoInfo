@@ -6,7 +6,7 @@
 
 
 int main (int argc,char *argv[]) {
-    int m=0, n=0;
+    int m=0,det=0,n=0;
     FILE *fmatrix, *fin, *fout;
     matrix *K;
     if(argc != 12){
@@ -28,6 +28,10 @@ int main (int argc,char *argv[]) {
         return -1;
     }
     readMatrix(fmatrix,K);
+    //det=detMatrix(K);
+    //printf("Det= %d\n",det);
+    printMatrix(K);
+    exchangeRows(K,2,3);
     printMatrix(K);
     return(0);
 }
