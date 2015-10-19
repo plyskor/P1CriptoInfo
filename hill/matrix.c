@@ -103,16 +103,16 @@ double detMatrix(matrix *m) {
         }
 
         pivote = getValue(auxM, i, i);
-        printf("pivote=%f\n", pivote);
+        
         if (p != -1)
             for (j =i +1 ; j < m->size; j++) {
                 aux = getValue(auxM, j, i);
-                printf("aux=%f\n", aux);
+                
                 for (k = 0; k < m->size; k++) {
                     aux2 = (getValue(auxM, j, k)-(getValue(auxM, i, k)*(aux / pivote)));
-                    printf("aux2=%f\n", aux2);
+                    
                     setValue(auxM, j, k, aux2);
-                    printMatrix(auxM);
+                    
                 }
             }
     }
