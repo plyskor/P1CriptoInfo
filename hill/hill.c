@@ -6,7 +6,8 @@
 
 
 int main (int argc,char *argv[]) {
-    int m=0,det=0,n=0;
+    int m=0,n=0;
+    double det=0;
     FILE *fmatrix, *fin, *fout;
     matrix *K;
     if(argc != 12){
@@ -21,17 +22,15 @@ int main (int argc,char *argv[]) {
     }
     K=initMatrix(n);
     setValue(K,1,2,23);
-    printf("%d\n",getValue(K,1,2));
+    printf("%lf\n",getValue(K,1,2));
     fmatrix=fopen(argv[7],"r");
     if(!fmatrix){
         printf("Error al abrir el archivo %s\n",argv[7]);
         return -1;
     }
     readMatrix(fmatrix,K);
-    //det=detMatrix(K);
-    //printf("Det= %d\n",det);
-    printMatrix(K);
-    exchangeRows(K,2,3);
+    det=detMatrix(K);
+    printf("Det= %lf\n",det);
     printMatrix(K);
     return(0);
 }

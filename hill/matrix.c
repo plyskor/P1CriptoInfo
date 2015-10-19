@@ -8,9 +8,9 @@ matrix *initMatrix(int size){
     ret=(matrix*)malloc(sizeof(matrix));
     if(!ret)return NULL;
     ret->size=size;
-    ret->data=(int**)malloc(size*sizeof(int*));
+    ret->data=(double**)malloc(size*sizeof(double*));
     for(i=0;i<size;i++){
-        ret->data[i]=(int *)malloc(size*sizeof(int));
+        ret->data[i]=(double *)malloc(size*sizeof(double));
         if(!ret->data[i])return NULL;
     }
     for (i=0;i<size;i++){
@@ -20,21 +20,22 @@ matrix *initMatrix(int size){
     }
     return ret;
 }
-void setValue(matrix *m,const int fila,const int col, const int value){
+void setValue(matrix *m,const int fila,const int col, const double value){
     if(!m||(fila<0)||(col<0)||(fila>m->size)||(col>m->size))return;
     m->data[fila][col]=value;
     return;
 }
-int getValue(matrix *m,const int fila,const int col){
+double getValue(matrix *m,const int fila,const int col){
    if(!m||(fila<0)||(col<0)||(fila>m->size)||(col>m->size))return -9999;
    return m->data[fila][col];
 }
 void readMatrix(FILE *in, matrix *m){
     if(!m||!in)return;
-    int i=0,j=0,aux=0;
+    int i=0,j=0;
+    double aux=0;
     for(i=0;i<m->size;i++){
         for(j=0;j<m->size;j++){
-            fscanf(in,"%d",&aux);
+            fscanf(in,"%lf",&aux);
             setValue(m,i,j,aux);
         }
     }
@@ -45,7 +46,7 @@ void printMatrix(matrix *m){
     int i=0,j=0;
     for(i=0;i<m->size;i++){
         for(j=0;j<m->size;j++){
-            printf("%d\t",getValue(m,i,j));
+            printf("%.2f\t",getValue(m,i,j));
         }
         printf("\n");
     }
@@ -73,32 +74,52 @@ void exchangeRows(matrix *m, int f1, int f2){
     return;
     
 }
-int detMatrix(matrix *m){
-    if(!m) return -999;
-    int res=1,i=0,j=0,k=0,pivote=0,aux=0,aux2=0;
-    /*Creamos matriz auxiliar ya q hay q diagonalizarla y no queremos tocar la otra*/
+
+double detMatrix(matrix *m) {
+    if (!m) return -999;
+    int  i = 0, j = 0, k = 0, z = 1, p = 0, f = 0;
+    double aux2=0,res=1,pivote=0,aux=0;
+    
+    /*Creamos matriz auxiliar ya q hay que hacerla triangular superior y no queremos tocar la otra*/
     matrix *auxM;
-    auxM=initMatrix(m->size);
-    copyMatrix(m,auxM);
-    if(!auxM)return -999;
-    for(i=0;i<m->size;i++){
-        pivote=getValue(auxM,i,i);
-        printf("pivote=%d\n",pivote);
-        for(j=i+1;j<m->size;j++){
-            aux=getValue(auxM,j,i);
-            printf("aux=%d\n",aux);
-            for(k=0;k<m->size;k++){
-                if(pivote==0)return 0;
-                aux2=(int)(getValue(auxM,j,k)-(getValue(auxM,i,k)*(aux/pivote)));
-                printf("aux2=%d\n",aux2);
-                setValue(auxM,j,k,aux2);
-                printMatrix(auxM);
+    auxM = initMatrix(m->size);
+    copyMatrix(m, auxM);
+    if (!auxM)return -999;
+
+    /*Empieza*/
+    for (i = 0; i < m->size; i++) {
+        p = 0;
+        if (getValue(auxM, i, i) == 0) {
+            p = -1;
+            f = i;
+            while ((f <= m->size)&&(p = -1)) {
+                if (getValue(auxM, i, p) != 0) {
+                    p = f;
+                    exchangeRows(auxM, i, p);
+                    z = z*-1;
+                }
+                f += 1;
             }
         }
+
+        pivote = getValue(auxM, i, i);
+        printf("pivote=%f\n", pivote);
+        if (p != -1)
+            for (j =i +1 ; j < m->size; j++) {
+                aux = getValue(auxM, j, i);
+                printf("aux=%f\n", aux);
+                for (k = 0; k < m->size; k++) {
+                    aux2 = (getValue(auxM, j, k)-(getValue(auxM, i, k)*(aux / pivote)));
+                    printf("aux2=%f\n", aux2);
+                    setValue(auxM, j, k, aux2);
+                    printMatrix(auxM);
+                }
+            }
     }
-    for(i=0;i<m->size;i++){
-        res=res*getValue(auxM,i,i);
+    for (i = 0; i < m->size; i++) {
+        res = res * getValue(auxM, i, i);
     }
+    res *= z;
     eraseMatrix(auxM);
     return res;
 }
