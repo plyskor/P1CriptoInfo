@@ -1,6 +1,6 @@
 /* 
  * File:   matrix.h
- * Author: jose
+ * Author: jose y cris
  *
  * Created on 18 de octubre de 2015, 23:17
  */
