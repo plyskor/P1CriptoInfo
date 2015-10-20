@@ -1,6 +1,9 @@
+
 #include "matrix.h"
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+
 matrix *initMatrix(int size){
     if(size<=0)return NULL;
     matrix *ret;
@@ -88,16 +91,19 @@ double detMatrix(matrix *m) {
 
     /*Empieza*/
     for (i = 0; i < m->size; i++) {
+        
         p = 0;
         if (getValue(auxM, i, i) == 0) {
+            //if(i==auxM->size-1) return 0;
             p = -1;
             f = i;
-            while ((f <= m->size)&&(p = -1)) {
-                if (getValue(auxM, i, p) != 0) {
+            while ((f <= m->size)&&(p == -1)) {
+                if (getValue(auxM, f, i) != 0) {
                     p = f;
                     exchangeRows(auxM, i, p);
                     z = z*-1;
                 }
+               
                 f += 1;
             }
         }
@@ -116,12 +122,125 @@ double detMatrix(matrix *m) {
                 }
             }
     }
+    //printf("Diagonal : \n");
+    //printMatrix(auxM);
     for (i = 0; i < m->size; i++) {
         res = res * getValue(auxM, i, i);
     }
     res *= z;
     eraseMatrix(auxM);
     return res;
+}
+void cofactores(matrix *src, matrix *des){
+    int i,j,k,l,inda=0,indb=0;
+    matrix *detM;
+    detM=initMatrix(src->size-1);
+    for(i=0;i<src->size;i++){
+        for(j=0;j<src->size;j++){
+            for(k=0;k<detM->size;k++,inda++){
+                for(l=0;l<detM->size;l++,indb++){
+                    if(inda==i)inda++;
+                    if(indb==j)indb++;
+                    setValue(detM,k,l,getValue(src,inda,indb));
+                }
+                indb=0;
+            }
+            inda=0;
+            //printf("COFACTORES %d %d DET=%f\n",i,j,detMatrix(detM));
+            //printMatrix(detM);
+            if(i%2==0){
+                if(j%2==0)setValue(des,i,j,detMatrix(detM));
+                else setValue(des,i,j,detMatrix(detM)*-1);                
+            }else{
+                if(j%2==0)setValue(des,i,j,detMatrix(detM)*-1);
+                else setValue(des,i,j,detMatrix(detM));
+            }
+            
+        }
+    }
+    free(detM);
+    return;
+}
+int inversoZm(int a, int m){
+    int r[50],s[50],t[50],q=0,i=0;
+    while(i<50){
+        r[i]=0;
+        s[i]=0;
+        t[i]=0;
+        i++;
+    }
+    r[0]=a;
+    r[1]=m;
+    s[0]=1;
+    s[1]=0;
+    t[0]=0;
+    t[1]=1;
+    i=1;
+    while(r[i]!=0){
+        q=r[i-1]/r[i];
+        r[i+1]=r[i-1]%r[i];
+        s[i+1]=s[i-1]-q*s[i];
+        t[i+1]=t[i-1]-q*t[i];
+        i++;
+    }
+    return s[i-1];
+}
+int mod(int a ,int b){
+    while(a<0){
+        a+=b;
+    }
+    while(a>=b){
+        a-=b;
+    }
+    return a;
+}
+void inversa(matrix* src,matrix *res,int modu){
+    if(!src||!res||src->size!=res->size)return;
+    int i,j;
+    matrix *aux;
+    aux=initMatrix(src->size);
+    double det=1;
+    int intDet=0;
+    cofactores(src,res);
+    copyMatrix(res,aux);
+    transpuesta(aux,res);
+    matrixMod(res,modu);
+    det=detMatrix(src);
+    det=mod((int)det,modu);
+    det=inversoZm(det,modu);
+    if(det==0)return;
+    for(i=0;i<src->size;i++){
+        for(j=0;j<src->size;j++){
+            setValue(res,i,j,(getValue(res,i,j)*det));         
+        }
+    }
+    matrixMod(res,modu);
+    free(aux);
+    return;
+}
+void matrixMod(matrix *m,int mod){
+    if(!m)return;
+    int i,j;
+    for(i=0;i<m->size;i++){
+        for(j=0;j<m->size;j++){
+            while(getValue(m,i,j)<0){
+                setValue(m,i,j,getValue(m,i,j)+mod);
+            }
+            while(getValue(m,i,j)>=mod){
+                setValue(m,i,j,getValue(m,i,j)-mod);
+            }
+        }
+    }
+}
+void transpuesta (matrix*src,matrix*res){
+    if(!src||!res||src->size!=res->size)return;
+    int i,j;
+    for(i=0;i<src->size;i++){
+        for(j=0;j<src->size;j++){
+            setValue(res,i,j,getValue(src,j,i));
+        }
+    }
+    return;
 }
 void eraseMatrix(matrix *m){
     if(!m) return;
