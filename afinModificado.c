@@ -11,29 +11,37 @@ void init_mpz_vector(mpz_t *vector,int size);
 int* cifra_caracter_afinModificado(int *cha, mpz_t a, mpz_t b , mpz_t m){
   int *cint,chaAux,mAux;
   cint = (int *) malloc (2*(sizeof(int)));
-
+  mAux = mpz_get_ui(m);
   if(cha[0]>64 && cha[0]<91){
     cha[0]+=32;
   }
   if(cha[0]<97 || cha[0]>122){
-    printf("ERROR, esto no es una letra , %d\n", cha[0]);
-    return(0);
+    if(cha[0]==32){
+      cha[0]=(mAux -1);
+    }else{
+      printf("ERROR, esto no es una letra , %d\n", cha[0]);
+    return(NULL);
+    }  
   }
   if(cha[1]>64 && cha[1]<91){
     cha[1]+=32;
   }
   if(cha[1]<97 || cha[1]>122){
-    printf("ERROR, esto no es una letra, %d\n", cha[1]);
-    return(0);
+    if(cha[1]==32){
+      cha[1]=(mAux -1);
+    }else{
+      printf("ERROR, esto no es una letra , %d\n", cha[0]);
+    return(NULL);
+    }  
   }
  
+  if(cha[0]!= (mAux -1)) cha[0]-=97;
+  if(cha[1]!= (mAux -1)) cha[1]-=97;
 
-  cha[0]-=97;
-  cha[1]-=97;
-
-  mAux = mpz_get_ui(m);
+  
 
   chaAux = (cha[0]*mAux) + cha[1];
+
 
   mpz_t p,c,aux, x, mod;
   mpz_init(p);
@@ -50,7 +58,10 @@ int* cifra_caracter_afinModificado(int *cha, mpz_t a, mpz_t b , mpz_t m){
   mpz_add(c,aux,b);
   mpz_mul(aux, m ,m);
   mpz_mod(c,c,aux);
-  mpz_cdiv_qr(x,mod,c,m);
+
+   
+  mpz_tdiv_qr(x,mod,c,m);
+
 
   if(mpz_cmp_ui(mod,0)<0){
     mpz_add(mod,mod,m);
@@ -59,8 +70,19 @@ int* cifra_caracter_afinModificado(int *cha, mpz_t a, mpz_t b , mpz_t m){
   cint[0] = mpz_get_ui(x);
   cint[1] = mpz_get_ui(mod);
 
-  cint[0]+=97;
-  cint[1]+=97;
+  if(cint[0]==(mAux -1)){
+    cint[0] = 32;
+  }else{
+    cint[0]+=97;
+  }
+  
+
+  if(cint[1]==(mAux -1)){
+    cint[1] = 32;
+  }else{
+    cint[1]+=97;
+  }
+ 
 
   mpz_clear(c);
   mpz_clear(p);
@@ -69,6 +91,77 @@ int* cifra_caracter_afinModificado(int *cha, mpz_t a, mpz_t b , mpz_t m){
   mpz_clear(mod);
 
   return cint;
+}
+
+int* descifra_caracter_afinModificado(int *cha, mpz_t a, mpz_t b , mpz_t m){
+  
+  int *cifint,mAux,chaAux;
+  mpz_t cif,aux, coc, rest;
+  mAux = mpz_get_ui(m);
+  if(cha[0]>64 && cha[0]<91){
+    cha[0]+=32;
+  }
+  if(cha[0]<97 || cha[0]>122){
+    if(cha[0]==32){
+      cha[0]=(mAux -1);
+    }else{
+      printf("ERROR, esto no es una letra , %d\n", cha[0]);
+    return(NULL);
+    }  
+  }
+  if(cha[1]>64 && cha[1]<91){
+    cha[1]+=32;
+  }
+  if(cha[1]<97 || cha[1]>122){
+    if(cha[1]==32){
+      cha[1]=(mAux -1);
+    }else{
+      printf("ERROR, esto no es una letra , %d\n", cha[0]);
+    return(NULL);
+    }  
+  }
+ 
+  if(cha[0]!= (mAux -1)) cha[0]-=97;
+  if(cha[1]!= (mAux -1)) cha[1]-=97;
+
+  cifint = (int*)malloc(2*(sizeof(int)));
+
+   
+
+
+  chaAux = (cha[0]*mAux) + cha[1];
+  mpz_init(aux);
+  mpz_init(coc);
+  mpz_init(rest);
+  mpz_init_set_ui(cif,chaAux);
+  mpz_mul(aux, m ,m);
+
+  mpz_sub(cif,cif,b);
+  mpz_mul(cif,cif,a);
+  mpz_mod(cif,cif,aux);
+  mpz_tdiv_qr(coc, rest,cif,m);
+
+  cifint[0] = mpz_get_ui(coc);
+  cifint[1] = mpz_get_ui(rest);
+
+  mpz_clear(cif);
+  mpz_clear(aux);
+  mpz_clear(coc);
+  mpz_clear(rest);
+
+  if(cifint[0]==(mAux -1)){
+    cifint[0] = 32;
+  }else{
+    cifint[0]+=97;
+  }
+
+  if(cifint[1]==(mAux -1)){
+    cifint[1] = 32;
+  }else{
+    cifint[1]+=97;
+  }
+  return cifint;
+
 }
 
 void euclidesExtendido(const mpz_t a, const mpz_t b,mpz_t mcd, mpz_t s, mpz_t t){
@@ -98,7 +191,7 @@ void euclidesExtendido(const mpz_t a, const mpz_t b,mpz_t mcd, mpz_t s, mpz_t t)
 
   while(mpz_cmp_ui(r2,0)!=0){
 
-    mpz_cdiv_qr(coc,rest,r1,r2);
+    mpz_tdiv_qr(coc,rest,r1,r2);
     mpz_set(r1,r2);
     mpz_set(r2,rest);
 
@@ -151,13 +244,13 @@ void init_mpz_vector(mpz_t *vector,int size){
 
 /* PROGRAMA PRINCIPAL */
 int main (int argc,char *argv[]) {
-  mpz_t a,m,b , mcd , inva , invb;
+  mpz_t a,m,b , mcd , inva , invb ,mAux;
   if(argc!=12){
     printf("Los argumentos del programa deben ser: afin {-C|-D} {-m |Zm|} {-a N×} {-b N+} [-i filein] [-o fileout]\n");
     return(0);
   }
 
-  if(strcmp(argv[1],"-C")==0){
+ 
     //El programa cifra 
      mpz_init_set_str(a,argv[5],10);
      mpz_init_set_str(m,argv[3],10);
@@ -165,15 +258,17 @@ int main (int argc,char *argv[]) {
      mpz_init(mcd);
      mpz_init(inva);
      mpz_init(invb);
+     mpz_init(mAux);
 
      //mpz_add(b,a,m);
     if((mpz_cmp(a, m) > 0) || (mpz_cmp(b, m) > 0)) {
       printf("Error\n");
       return(0);
     }
+    mpz_mul(mAux,m,m);
 
-    euclidesExtendido(a, m, mcd,inva,invb);
-    //gmp_printf("El resultado de euclides extendido es: mcd = %Zd , inverso de a = %Zd \n", mcd , inva);
+    euclidesExtendido(a, mAux, mcd,inva,invb);
+    gmp_printf("El resultado de euclides extendido es: mcd = %Zd , inverso de a = %Zd \n", mcd , inva);
     if( mpz_cmp_ui (mcd, 1) !=0){
       printf("Error\n");
       return(0);
@@ -189,7 +284,9 @@ int main (int argc,char *argv[]) {
     out = fopen(argv[11] , "w");
 
     while(!feof(f)){
+
       pint[0]=fgetc(f);
+
       if(pint[0] == -1){
         break;
       }
@@ -198,12 +295,18 @@ int main (int argc,char *argv[]) {
       if(pint[1] == -1){
         pint[1] = 32;
       }
+
+       if(strcmp(argv[1],"-C")==0){
       
       cintAux=cifra_caracter_afinModificado(pint,a,b,m);
 
+    }else if(strcmp(argv[1],"-D")==0){
+      cintAux=descifra_caracter_afinModificado(pint,inva,b,m);
+    }
+
       cint[0] = cintAux[0];
       cint[1] = cintAux[1];
-      //free(cintAux);
+      free(cintAux);
       fprintf(out,"%c",cint[0]);
       fprintf(out,"%c",cint[1]);
 
@@ -217,8 +320,7 @@ int main (int argc,char *argv[]) {
     mpz_clear(inva);
     mpz_clear(invb);
     mpz_clear(mcd);
-    return(0);
+    mpz_clear(mAux);
 
-  }
   return(0);
 }
