@@ -20,6 +20,11 @@ void leeClave(char *str,int* clave,int tam){
     }
     for(i=1,j=0;j<tam;j++,i+=2){
         clave[j]=atoi(&str[i]);
+        if(clave[j]<0||clave[j]>tam){
+            printf("Al menos una de las claves contiene valores ilegales\n");
+            clave[0]=-1;
+            return;
+        }
     }
     return;
 }
@@ -44,6 +49,7 @@ int main(int argc, char** argv) {
     clave1=(int *)malloc(tam1*sizeof(int));
     if(!clave1) return -1;
     leeClave(argv[3],clave1,tam1);
+    if(clave1[0]==-1)return -1;
     /*K2*/
     str=(char *)malloc(100*sizeof(char));
     if(!str)return -1;
@@ -54,6 +60,7 @@ int main(int argc, char** argv) {
     clave2=(int *)malloc(tam2*sizeof(int));
     if(!clave2) return -1;
     leeClave(argv[5],clave2,tam2);
+    if(clave2[0]==-1)return -1;
     
     /*Abrimos los ficheros*/
     fin=fopen(argv[7],"r");
