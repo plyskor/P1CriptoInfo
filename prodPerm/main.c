@@ -20,7 +20,7 @@ void leeClave(char *str,int* clave,int tam){
     }
     for(i=1,j=0;j<tam;j++,i+=2){
         clave[j]=atoi(&str[i]);
-        if(clave[j]<0||clave[j]>tam){
+        if(clave[j]<=0||clave[j]>tam){
             printf("Al menos una de las claves contiene valores ilegales\n");
             clave[0]=-1;
             return;
