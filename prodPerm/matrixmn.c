@@ -104,10 +104,6 @@ void cifra(matrixmn* P, matrixmn *C,int *k1,int *k2){
             setValueMN(C,j,i,getValueMN(aux,j,k2[i]-1));
         }
     }
-    printMatrixMN(P);
-    printf("\n");
-    printMatrixMN(C);
-    printf("\n");
     free(aux);
     return;
 }
@@ -127,10 +123,6 @@ void descifra(matrixmn* C, matrixmn *P,int *k1,int *k2){
             setValueMN(P,k1[i]-1,j,getValueMN(aux,i,j));
         }
     }
-    printMatrixMN(C);
-    printf("\n");
-    printMatrixMN(P);
-    printf("\n");
     free(aux);
     return;
 }
