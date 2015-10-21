@@ -10,7 +10,7 @@
 int main(int argc, char const *argv[]){
 
 	FILE *f;
-	f = fopen(argv[4], "r");
+	f = fopen(argv[2], "r");
 	char **cadenas;
 	cadenas = (char**) malloc(MAX* sizeof(char *));
 
