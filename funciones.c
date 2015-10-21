@@ -1,75 +1,11 @@
 #include "funciones.h"
 #include <stdio.h>
 #include <stdlib.h>
+ #include <string.h>
+ #define MAX 2000
+#define MAXDIST 9000
+#define MAXCADS 100
 
-void euclidesExtendido(const mpz_t a, const mpz_t b,mpz_t mcd, mpz_t s, mpz_t t){
-  int flag = 0;
-
-  mpz_t x,aux,r1,r2,s1,s2,t1,t2,coc,rest;
-  mpz_init(x);
-  mpz_init(aux);
-  mpz_init(coc);
-  mpz_init(rest);
-  mpz_init(t1);
-  mpz_init(s2);
- 
-
-  if(mpz_cmp(a,b)>0){
-    mpz_init_set(r1,a);
-    mpz_init_set(r2 , b);
-  }else{
-    mpz_init_set(r1,b);
-    mpz_init_set(r2 ,a);
-    flag = 1;
-  }
- 
-
-  mpz_init_set_ui(s1,1);
-  mpz_init_set_ui(t2,1);
-
-  while(mpz_cmp_ui(r2,0)!=0){
-
-    mpz_tdiv_qr(coc,rest,r1,r2);
-    mpz_set(r1,r2);
-    mpz_set(r2,rest);
-
-    mpz_mul(x,coc,s2);
-    mpz_sub(aux,s1,x);
-    mpz_set(s1,s2);
-    mpz_set(s2,aux);
-
-    mpz_mul(x,coc,t2);
-    mpz_sub(aux,t1,x);
-    mpz_set(t1,t2);
-    mpz_set(t2,aux);
-  }
-
-  
-  mpz_set(mcd,r1);
-  
-  if(flag==1){
-    
-    mpz_set(s,t1);
-    mpz_set(t,s1);
-  }else{
-    mpz_set(s,s1);
-    mpz_set(t,t1);
-  }
-  if(mpz_cmp_ui(s,0)<0){
-      mpz_add(s,s,b);
-  }
-  mpz_clear(x);
-  mpz_clear(aux);
-  mpz_clear(r1);
-  mpz_clear(r2);
-  mpz_clear(s1);
-  mpz_clear(s2);
-  mpz_clear(t1);
-  mpz_clear(t2);
-  mpz_clear(coc);
-  mpz_clear(rest);
-  return;
-}
 
 int cmpfunc (const void * a, const void * b)
 {
@@ -117,5 +53,85 @@ void factores (int num , int *factores){
    	}
 }
 
+double calculaFrecuencia(char letra, char *cadena, int sizeCadena){ 
+  //la cadena es el mensaje entero, en sizeCadena guardo hasta donde quiero analizar
+  int i;
+  double frec=0;
+  for ( i = 0; i <= sizeCadena; ++i){
 
+    if(cadena[i]==letra) frec++;
+  }
+  
+  return frec;
+}
+
+double calculaIndiceC(double *frecs, int size, int sizeFrecs){
+  int i;
+  double indiceC=0;
+  
+  for (i = 0; i <sizeFrecs; i++){
+    
+    indiceC+=((frecs[i]/(size+1))*((frecs[i]-1)/size));
+  }
+  return indiceC;
+}
+
+double indiceCdeColumna(FILE *f,int columna , int ngrama){
+  int i=0, cont=0, temp=0, sizeC=0, flag=0,n, aux;
+  char *c,a;
+  c = (char*) malloc(sizeof(char)*MAX);
+  double *frecs , IC=0;
+  
+  //cojo la letra m de cada n-grama
+  fseek(f, columna, SEEK_SET);
+  while (1){
+    if((aux=fgetc(f))== -1){
+      break;
+    }
+    c[i] = aux;
+
+    
+    for(cont=0;cont<ngrama-1;cont++){
+      if((temp=fgetc(f))== 10){
+        //caso \n
+        cont --;
+        continue;
+      } 
+    }
+    i++;
+  }
+  c[i] = '\0';
+  //printf("leo :%s\n",c);
+
+  sizeC = strlen(c);
+  frecs = (double *) malloc(sizeC * (sizeof(double))+1);
+  for (cont = 0; cont < sizeC; cont++){
+    for(temp=0; temp<cont;temp++){
+      if(c[cont] == '\0'){
+        flag = -1;
+        break;
+      }
+      if(c[temp] == c[cont]){
+        flag = 1;
+        break;
+      }
+      
+    }
+    if(flag ==-1){
+      break;
+    }else if(flag ==1){
+      flag=0;
+    }else{
+      frecs[cont]= calculaFrecuencia(c[cont], c, sizeC);
+      //printf("frec de %c = %f\n",c[cont], frecs[cont]);
+    }
+    
+  }
+
+  IC = calculaIndiceC(frecs, sizeC, cont-1);
+  //printf("IC = %f\n",IC);
+  free(frecs);
+  free(c);
+  return IC;
+}
 

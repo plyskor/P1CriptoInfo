@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <gmp.h>
-#include "funciones.h"
+#include "funciones_gmp.h"
 #define TAM 50
 /*#include "gmp.h"*/
 

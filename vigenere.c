@@ -4,6 +4,9 @@
 #define MAX 80
 int mod(int a, int b);
 int conv_ascii(int l){
+  if(l==10){
+    l=32;
+  }
   if(l>64 && l<91){
      l+=32;
   }
@@ -11,7 +14,7 @@ int conv_ascii(int l){
             return 26;
         }
   if(l<97 || l>122){
-     printf("ERROR, esto no es una letra\n");
+     printf("ERROR, %d esto no es una letra\n",l);
      return(-1);
   }
   l-=97;
@@ -25,7 +28,7 @@ int cifra_vigenere(int plano , int clave , int m){
             cifrado=32;
             return cifrado;
         }
-  cifrado+=97; //Para pasarlo a ascii
+  cifrado+=65; //Para pasarlo a ascii
   return cifrado;
 
 }
@@ -36,7 +39,7 @@ int descifra_vigenere(int cifrado , int clave , int m){
             descifrado=32;
             return descifrado;
         }
-  descifrado+=97; //Para pasarlo a ascii
+  descifrado+=65; //Para pasarlo a ascii
   return descifrado;
 
 }
@@ -62,7 +65,7 @@ int main (int argc,char *argv[]) {
     i=0;
     strcpy(clave, argv[3]);
     size= strlen(clave);
-    if(strcmp(argv[1],"-C")==0){
+    
       FILE *f , *out;
       f= fopen(argv[7],"r");
       out = fopen(argv[9] , "w");
@@ -75,40 +78,19 @@ int main (int argc,char *argv[]) {
         aux = (int)clave[i];
 
         claveInt = conv_ascii(aux);
+        if(strcmp(argv[1],"-C")==0){
         cifrado = cifra_vigenere(l , claveInt ,m);
                         if(cifrado==-1) continue;
-        fprintf(out,"%c",cifrado);
-        i++;
-      if(i==size) i=0;
-      }
-      fclose(f);
-      fclose(out);
-      free(clave);
-      return (0);
-    }
-        if(strcmp(argv[1],"-D")==0){
-      FILE *f , *out;
-      f= fopen(argv[7],"r");
-      out = fopen(argv[9] , "w");
-      while(!feof(f)){
-        l =fgetc(f);
-        if(l == -1){
-            break;
+        
+        }else if(strcmp(argv[1],"-D")==0){
+          cifrado = descifra_vigenere(l , claveInt ,m);
         }
-        l = conv_ascii(l);
-        aux = (int)clave[i];
-
-        claveInt = conv_ascii(aux);
-        cifrado = descifra_vigenere(l , claveInt ,m);
-        fprintf(out,"%c",cifrado);
+      fprintf(out,"%c",cifrado);
         i++;
       if(i==size) i=0;
-      }
-      fclose(f);
-      fclose(out);
-      free(clave);
-      return (0);
     }
-
-  return(0);
-}
+    fclose(f);
+    fclose(out);
+    free(clave);
+    return (0);
+  }
