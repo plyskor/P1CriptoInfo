@@ -52,7 +52,7 @@ int mod(int a, int b){
 int main (int argc,char *argv[]) {
 
   if(argc!=10){
-      printf("Los argumentos del programa deben ser: afin {-C|-D} {-k clave} {-m |Zm|} [-i filein] [-o fileout]\n");
+      printf("Los argumentos del programa deben ser: vigenere {-C|-D} {-k clave} {-m |Zm|} [-i filein] [-o fileout]\n");
       return(0);
     }
     char *clave;

@@ -13,8 +13,12 @@
 #ifdef	__cplusplus
 extern "C" {
 #endif
-void euclidesExtendido(const mpz_t a, const mpz_t b,mpz_t mcd, mpz_t s, mpz_t t);
 
+void euclidesExtendido(const mpz_t a, const mpz_t b,mpz_t mcd, mpz_t s, mpz_t t);
+int cmpfunc (const void * a, const void * b);
+int mcd(int a,int b);
+int mcd_numeros_recusiva(int *numeros,int cont);
+int mcd_numeros(int *numeros, int longitud);
 
 #ifdef	__cplusplus
 }

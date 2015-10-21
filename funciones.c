@@ -71,12 +71,36 @@ void euclidesExtendido(const mpz_t a, const mpz_t b,mpz_t mcd, mpz_t s, mpz_t t)
   return;
 }
 
-int mcd(int *numeros, int longitud){
-	int i;
-	for (int i = 0; i < longitud; ++i){
-		
-	}
+int cmpfunc (const void * a, const void * b)
+{
+   return ( *(int*)a > *(int*)b );
 }
+
+int mcd(int a,int b) // función recursiva.
+{
+    return(b==0) ? a : mcd(b,a%b);
+  //si b==0 es verdad,devolvemos a = m.c.d.
+  //si no,entramos en otra función recursiva (hasta que se resuelva).
+}
+
+int mcd_numeros_recusiva(int *numeros,int cont){
+	if(cont == 2){
+		return mcd(numeros[0],numeros[1]);
+	}else if(cont>2){
+		cont--;
+		return mcd(numeros[cont+1], mcd_numeros_recusiva(numeros,cont));
+	}
+	
+
+}
+int mcd_numeros(int *numeros, int longitud){
+
+	qsort(numeros, longitud, sizeof(int), cmpfunc);
+	return mcd_numeros_recusiva(numeros,longitud);
+}
+
+
+
 	
 
 void factores (int num , int *factores){
@@ -92,3 +116,6 @@ void factores (int num , int *factores){
    	      i++;
    	}
 }
+
+
+
