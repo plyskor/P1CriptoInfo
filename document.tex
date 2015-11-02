@@ -1,0 +1,67 @@
+\documentclass{apuntes}
+
+\usepackage{tikztools}
+\usepackage{tikz-3dplot}
+\usepackage{textcomp}
+\usepackage{tikz-qtree}
+\usepackage{changepage}
+% subfiguras
+\usetikzlibrary{arrows}
+
+\newcommand{\theauthor}{}
+\newcommand{\thetitle}{Modelización\\ Porque los apuntes de Chamizo son demasiado fáciles}
+\newcommand{\rightheader}{Modelización}
+\newcommand{\leftheader}{UAM - 2014/2015}
+
+% Si no compila y el directorio tikzgen está creado, quitar estas dos sentencias.
+%\precompileImages
+%\precompileTikz
+
+\title{Modelización}
+\author{Guillermo Guridi Mateos\\Cristina Kasner Toruné}
+\date{Curso 2014 - 2015 C2}
+
+% Paquetes adicionales
+
+% --------------------
+
+\newcommand{\cte}{\text{Cte}}
+
+\begin{document}
+\pagestyle{plain}
+\maketitle
+%\abstract{Porque los apuntes de Chamizo son demasiado fáciles}
+
+\tableofcontents
+\newpage
+% Contenido.
+
+\chapter{Introducción}
+
+\section{¿De qué trata la modelización?}
+
+La modelización trata de dar descripciones de sistemas (situaciones) reales con un lenguaje matemático. Resulta particularmente útil en Física.
+
+Entre los siglos XVII y XVIII se compilaban tablas astronómicas muy precisas con medidas acerca de los ángulos con los que podía verse cada planeta en un instante determinado. Las tablas más precisas fueron creadas por Tycho Brahe y eran realmente codiciadas por Kepler.
+
+Kepler desarrolló un modelo matemático que sostenía, entre otras cosas, que los planetas se movían en elipses. Kepler estaba muy interesado en obtener las tablas de Tycho Brahe pues quería analizarlas con el fin de poder probar sus teorías. Finalmente, con la muerte de su creador, Kepler las heredó y pudo establecer una relación entre los cuadrados de los períodos y el cubo de los radios de giro de los planteas.
+
+Posteriormente llegó Newton, que modelizó el movimiento de los planetas con la fórmula:
+
+$$F = - \frac{GMm}{r^2}$$
+
+Esta fórmula en su momento tuvo una gran importancia filosófica, pues permitía explicar toda la teoría acerca del movimiento de los planetas a partir de una ecuación muy simple. No obstante, la utilidad matemático-física de esta ecuación en el momento de su descubrimiento era prácticamente nula.
+
+Newton no conocía el valor de G y si consideramos las interacciones entre los planetas la fórmula se complica mucho. Sin embargo, esta fórmula seguía (y sigue) suponiendo una aproximación bastante acertada.
+
+Así funciona la modelización, a partir de datos surge una idea o explicación matemática que más tarde es complementada con un modelo matemático.
+
+
+
+%% Apéndices (ejercicios, exámenes)
+\appendix
+
+\chapter{Ejercicios}
+
+\printindex
+\end{document}

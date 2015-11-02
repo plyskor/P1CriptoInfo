@@ -30,11 +30,12 @@ void leeClave(char *str,int* clave,int tam){
 }
 int* randomA(int n) 
 {
+    int i;
     int* r = malloc(n * sizeof(int));
-    for(int i=0;i<n;++i){
+    for(i=0;i<n;++i){
         r[i]=i+1;
     }
-    for (int i = n-1; i >= 0; --i){
+    for (i = n-1; i >= 0; --i){
     //generate a random number [0, n-1]
     int j = rand() % (i+1);
 
