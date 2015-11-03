@@ -20,6 +20,13 @@ void PC1fun(unsigned char *input, unsigned char *permutation){
     Si no es un cero meto en desire bit un 1 en la posicion apropiada y hago un 
     XOR con el byte que ya hubiera en permutation, de forma que solo cambio el bit deseado
   */
+/******************************¿ESTA AL REVES????****************************
+
+ Deberia ser: 
+desiredbit = input[newpos/8] & Positions[newpos%8]; 
+permutation[bit/8] = desiredbit ^ permutation[bit/8];
+
+*****************************************************************************/
 
   //permutation debe estar inicializada a 0
   int bit, newpos;

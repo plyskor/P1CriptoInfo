@@ -68,6 +68,14 @@ int main(int argc, char const *argv[]){
 			return -1;
 		}
 	}
+
+	/*
+	Falta:
+	LLamar a la función de tratar texto
+	Hacer el afin
+	Llamar a la función de las probabilidades
+	Irlo escribiendo todo en out
+	*/	
 	fclose(in);
 	fclose(out);
 	fclose(fClaves);
