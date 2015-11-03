@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Des_tables.c"
+#include "funcionesDES.h"
 
 static unsigned char Positions[8] = {1,2,4,8,16,32,64,128};
 
@@ -80,7 +81,9 @@ int main()
   }*/
 
   unsigned char input[6] = {'a','b','c','d','e','f'};
-  unsigned char leoAux[8];
+  unsigned char output[4];
+  int i;
+ /* unsigned char leoAux[8];
   unsigned char output[4];
   int caja, bit, posrow=0 , poscol=0 ,poscolaux = 0, newpos=0, i;
   unsigned char desiredbit, leo, aux = 0;
@@ -103,17 +106,11 @@ int main()
 
   }
 
-   for (i = 0; i < 8; ++i)
-  {
-    printf("en i = %d , leo = %d\n", i, leoAux[i]);
-  }
-
 
   for(caja=0;caja<8;caja++){
     leo=0;
     poscol =0;
     leo = leoAux[caja];
-    printf("LEO: %d\n",leo);
       for(bit = 0; bit<6;bit++){//rotamos para obtener la pos de la columna
         newpos = bit+1;
         if(newpos>=6){
@@ -126,7 +123,7 @@ int main()
               poscol = desiredbit ^ poscol;
         }
       }
-      printf("POSCOL : %d\n", poscol);
+     
       poscolaux = poscol & andcol;
 
       leo = poscol;
@@ -146,17 +143,17 @@ int main()
 
       poscol = poscol & androw;
       leo = poscol;
-      printf("LEO antes de swap: %d\n", leo);
+  
       posrow=0;
       for(bit = 0; bit<2;bit++){//rotamos para hacer swap de los dos ultimos bits
         newpos = bit+1;
-        if(newpos>=1){
-          newpos-=1;
+        if(newpos>=2){
+          newpos-=2;
         }
         desiredbit = leo & Positions[newpos];
         if (desiredbit != 0) {
               desiredbit = Positions[bit];
-              //?¿?¿?¿
+      
               posrow = desiredbit ^ posrow;
         }
         
@@ -171,7 +168,9 @@ int main()
          aux = 0;
       }
     
-  }
+  }*/
+      cajaSfun(input, output);
+
   for (i=0; i< 4; i++){
     printf("output : %d\n", output[i]);
   }
