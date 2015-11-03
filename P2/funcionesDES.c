@@ -95,7 +95,7 @@ void cajaSfun(unsigned char *input, unsigned char *output){
   aux = 0;
 
   for(caja=0;caja<8;caja++){
-    leo = input[caja];
+    leo = input[caja*6];
       for(bit = 0; bit<6;bit++){//rotamos para obtener la pos de la columna
         newpos = bit+1;
         if(newpos>=6){
@@ -147,7 +147,6 @@ void cajaSfun(unsigned char *input, unsigned char *output){
          output[caja/2] =  output[caja/2] ^ aux;
          aux = 0;
       }
-// me falta ver como lo cojo de 6 en 6 en vez de de 8 en 8.
     
   }
 }

@@ -80,29 +80,54 @@ int main()
   }*/
 
   unsigned char input[6] = {'a','b','c','d','e','f'};
-  unsigned char output[6];
-  int caja, bit, posrow=0 , poscol=0 ,poscolaux, newpos=0;
-  unsigned char desiredbit, leo;
+  unsigned char leoAux[8];
+  unsigned char output[4];
+  int caja, bit, posrow=0 , poscol=0 ,poscolaux = 0, newpos=0, i;
+  unsigned char desiredbit, leo, aux = 0;
   unsigned char androw = 3;
   unsigned char andcol = 15;
-int aux; 
+  
+  for (i = 0; i < 8; ++i)
+  {
+    leoAux[i] = 0;
+  }
+
+  for (i = 0; i < 48; ++i)
+  {
+    leo = input[i/8];
+    desiredbit = leo & Positions[i%8];
+        if (desiredbit != 0) {
+              desiredbit = Positions[i%6];
+              leoAux[i/6] = desiredbit ^ leoAux[i/6];
+        }
+
+  }
+
+   for (i = 0; i < 8; ++i)
+  {
+    printf("en i = %d , leo = %d\n", i, leoAux[i]);
+  }
+
 
   for(caja=0;caja<8;caja++){
-    leo = input[caja];
-    printf("leo : %d\n", leo );
+    leo=0;
+    poscol =0;
+    leo = leoAux[caja];
+    printf("LEO: %d\n",leo);
       for(bit = 0; bit<6;bit++){//rotamos para obtener la pos de la columna
         newpos = bit+1;
         if(newpos>=6){
           newpos-=6;
         }
         desiredbit = leo & Positions[newpos];
+        //printf("BIT : %d , POSITIONS : %d , DESIREDBIT : %d, LEO : %d\n",bit , Positions[newpos] ,desiredbit, leo);
         if (desiredbit != 0) {
               desiredbit = Positions[bit];
               poscol = desiredbit ^ poscol;
         }
       }
+      printf("POSCOL : %d\n", poscol);
       poscolaux = poscol & andcol;
-      printf("COLUMNA : %d\n",poscolaux );
 
       leo = poscol;
       poscol=0;
@@ -121,6 +146,7 @@ int aux;
 
       poscol = poscol & androw;
       leo = poscol;
+      printf("LEO antes de swap: %d\n", leo);
       posrow=0;
       for(bit = 0; bit<2;bit++){//rotamos para hacer swap de los dos ultimos bits
         newpos = bit+1;
@@ -130,16 +156,25 @@ int aux;
         desiredbit = leo & Positions[newpos];
         if (desiredbit != 0) {
               desiredbit = Positions[bit];
+              //?¿?¿?¿
               posrow = desiredbit ^ posrow;
         }
-
+        
       }
-      printf("FILA : %d\n",posrow);
-
-      aux = S_BOXES[caja][posrow][poscolaux];
-      printf("%d\n",aux);
-    }
+      printf("CAJA %d, FILA : %d , COLUMNA : %d\n", caja, posrow, poscolaux );
+      if((caja%2)==0){
+        aux = 0x00 ^ S_BOXES[caja][posrow][poscolaux];
        
+      }else{
+        output[caja/2] = S_BOXES[caja][posrow][poscolaux] << 4;
+         output[caja/2] =  output[caja/2] ^ aux;
+         aux = 0;
+      }
+    
+  }
+  for (i=0; i< 4; i++){
+    printf("output : %d\n", output[i]);
+  }
 
   return 0;
 }
