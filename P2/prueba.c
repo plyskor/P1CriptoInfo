@@ -6,7 +6,7 @@ static unsigned char Positions[8] = {1,2,4,8,16,32,64,128};
 
 int main()
 {
-  unsigned char input[8] = {'a','b','c','d','e','f','g','h'};
+  /*unsigned char input[8] = {'a','b','c','d','e','f','g','h'};
   unsigned char permutation[8];
   unsigned char inverse[8];
   int i;
@@ -62,7 +62,7 @@ int main()
   for (j = 0; j < 4; j++) {
         permutation[j+4] = permutation[j];
         permutation[j] = tempcopy[j];
-  }*/
+  }
 
   // Reverse Permutation, remember to swap left side with right
   for (bit = 0; bit < 64; bit++) {
@@ -77,7 +77,69 @@ int main()
  printf("\n Reverse Permutation: \n");
   for (i = 0; i < 8; i++) {
         printf(" %c", inverse[i]);
-  }
+  }*/
+
+  unsigned char input[6] = {'a','b','c','d','e','f'};
+  unsigned char output[6];
+  int caja, bit, posrow=0 , poscol=0 ,poscolaux, newpos=0;
+  unsigned char desiredbit, leo;
+  unsigned char androw = 3;
+  unsigned char andcol = 15;
+int aux; 
+
+  for(caja=0;caja<8;caja++){
+    leo = input[caja];
+    printf("leo : %d\n", leo );
+      for(bit = 0; bit<6;bit++){//rotamos para obtener la pos de la columna
+        newpos = bit+1;
+        if(newpos>=6){
+          newpos-=6;
+        }
+        desiredbit = leo & Positions[newpos];
+        if (desiredbit != 0) {
+              desiredbit = Positions[bit];
+              poscol = desiredbit ^ poscol;
+        }
+      }
+      poscolaux = poscol & andcol;
+      printf("COLUMNA : %d\n",poscolaux );
+
+      leo = poscol;
+      poscol=0;
+       for(bit = 0; bit<6;bit++){//rotamos para obtener la pos de la fila
+        newpos = bit+4;
+        if(newpos>=6){
+          newpos-=6;
+        }
+        desiredbit = leo & Positions[newpos];
+        if (desiredbit != 0) {
+              desiredbit = Positions[bit];
+              poscol = desiredbit ^ poscol;
+        }
+         
+      }
+
+      poscol = poscol & androw;
+      leo = poscol;
+      posrow=0;
+      for(bit = 0; bit<2;bit++){//rotamos para hacer swap de los dos ultimos bits
+        newpos = bit+1;
+        if(newpos>=1){
+          newpos-=1;
+        }
+        desiredbit = leo & Positions[newpos];
+        if (desiredbit != 0) {
+              desiredbit = Positions[bit];
+              posrow = desiredbit ^ posrow;
+        }
+
+      }
+      printf("FILA : %d\n",posrow);
+
+      aux = S_BOXES[caja][posrow][poscolaux];
+      printf("%d\n",aux);
+    }
+       
 
   return 0;
 }
