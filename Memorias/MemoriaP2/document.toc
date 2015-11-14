@@ -1,2 +1,4 @@
 \select@language {spanish}
-\contentsline {chapter}{\numberline {I}Ejercicio 1}{2}{chapter.1}
+\contentsline {chapter}{\numberline {A}Ejercicios}{2}{appendix.Alph1}
+\contentsline {section}{\numberline {A.1}Ejercicio 1-Seguridad perfecta}{2}{section.Alph1.1}
+\contentsline {section}{\numberline {A.2}Ejercicio 2-Implementaci\IeC {\'o}n del DES}{3}{section.Alph1.2}

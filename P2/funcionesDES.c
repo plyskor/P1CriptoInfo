@@ -80,8 +80,9 @@ void rotarVector(unsigned char *input, unsigned char *permutation, int round){
   for (bit = 0; bit < 56; bit++) {
        
         newpos = bit+rot;
-        if(newpos>=56){
-          newpos-=56;
+        if(newpos>=28){
+        
+          newpos-=28;
         }
         desiredbit = input[bit/8] & Positions[bit%8];
         if (desiredbit != 0) {
@@ -182,4 +183,54 @@ void cajaSfun(unsigned char *input, unsigned char *output){
       }
     
   }
+}
+
+
+void DES(unsigned char *input, unsigned char *k ,unsigned char *output){
+  //P1
+  //Rondas(16)
+    //F:
+      // Expando r0 y hago XOR con la clave
+      //Caja S con el resultado
+      //Permutación P
+    //XOR con L0
+
+  
+
+
+}
+
+void generacionKi(unsigned char *K , unsigned char **ki){
+  //Para generacion de ki:
+    //Quito bits de paridad
+    //Permutacion PC1
+    //Desplazo (cada uno de los subloques)
+    //Permutacion PC2
+    //Concateno
+  unsigned char permutationP1[56];
+  unsigned char permutationRot[56];
+  unsigned char permutationP2[48];
+  unsigned char  Kaux[56];
+  int i,t;
+  for (i = 0; i < 56; i++)
+  {
+    permutationP1[i] = 0;
+    permutationRot[i] = 0;
+  }
+  quitarParidad(K, Kaux);
+  PC1fun(Kaux, permutationP1);
+
+  for (i = 0; i < 16; i++)
+  {
+    for (t = 0; t < 48; t++)
+    {
+      permutationP2[t] =0;
+    }
+    //¿como separo la cadena?
+    rotarVector(permutationP1, permutationRot, i);
+    PC2fun(permutationRot, permutationP2);
+
+  }
+
+
 }
