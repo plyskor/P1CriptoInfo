@@ -49,10 +49,38 @@ void quitarParidad(unsigned char *input, unsigned char *output){
   for (bit = 0; bit < 64; bit++)
   {
     if(((bit+1)%8)!=0){
-      output[outbit/8] = input[bit/8];
-      outbit++; 
+      desirebit = input[bit/8] && Positions[(bit+(bit/8))%8];
+      if(desiredbit!=0){
+        output[outbit/8] = desirebit ^ output[outbit/8];
+        outbit++;
+      }
     }
     
+  }
+}
+
+
+void ponerParidad(unsigned char *input, unsigned char *output){
+  //?¿??¿?¿?¿¿?¿?¿?¿¿
+  //hacemos paridad impar
+  int byte, bit , i ,contparidad = 0;
+  char outbit = 0;
+  for (i = 0; i < 56; i++)
+  {
+    output[i] = 0;
+  }
+  for (byte = 0; byte < 7; byte++)
+  {
+    for(bit =0 ; bit < 7 ; bit++){
+      outbit = input[byte/7] && Positions[bit];
+      if(outbit!=0){
+        output[byte] = outbit ^ output[byte];
+        contparidad ++;
+      } 
+    }
+    if((contparidad%2)==1){
+      output[byte] = Positions[7] ^ output[byte];
+    }    
   }
 }
 
@@ -238,6 +266,7 @@ void generacionKi(unsigned char *K , unsigned char **ki){
     // a rotarVector le paso toda la cadena junta pero los rota por separado y devuelve lass dos cadenas concatenadas
     rotarVector(permutationP1, permutationRot, i);
     PC2fun(permutationRot, permutationP2);
+    //FALTA PONER PARIDAD!!!! 
     for(t=0 ; t< 48 ; t++){
       ki[i][t] = permutationP2[t];
     }
