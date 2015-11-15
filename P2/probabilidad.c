@@ -8,8 +8,8 @@
 void calculaProbs(FILE *f, double *prob){ //Mi texto estará en mayúsculas y sin espacios, con un alfabeto de 26 letras
 	
 	int longText=0, frec=0 ,i,l;
-//double *prob;
-//prob = (double*) malloc (27 * sizeof(double));
+	prob = (double *)malloc (26*sizeof(double));
+    if(!prob)return;
 	for (i = 0; i < 26; ++i){
 		prob[i]=0;
 	}
@@ -29,7 +29,11 @@ void calculaProbs(FILE *f, double *prob){ //Mi texto estará en mayúsculas y si
 void calculaProbsCondicionadas(FILE *plano, FILE *cifrado , double **prob){
 	
 	int i,j,p,c, longText=0;
+	prob=(double **)malloc(26*sizeof(double*));
+    if(!prob)return;
 	for (i = 0; i < 26; ++i){
+		prob[i]=(double*)malloc(26*sizeof(double));
+        if(!prob[i])return;
 		for(j=0;j<26;j++){
 			prob[i][j]=0;
 		}
