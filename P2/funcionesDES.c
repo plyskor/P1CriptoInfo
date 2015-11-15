@@ -34,10 +34,10 @@ permutation[bit/8] = desiredbit ^ permutation[bit/8];
   for (bit = 0; bit < 56; bit++) {
        
         newpos = ((int)PC1[bit])-1;
-        desiredbit = input[bit/8] & Positions[bit%8];
+        desiredbit = input[newpos/8] & Positions[newpos%8]; 
         if (desiredbit != 0) {
               desiredbit = Positions[newpos%8];
-              permutation[newpos/8] = desiredbit ^ permutation[newpos/8];
+              permutation[bit/8] = desiredbit ^ permutation[bit/8];
         }
   }
 
@@ -62,10 +62,10 @@ void PC2fun(unsigned char *input, unsigned char *permutation){
   unsigned char desiredbit;
   for (bit = 0; bit < 48; bit++) {
         newpos = ((int)PC2[bit])-1;
-        desiredbit = input[bit/8] & Positions[bit%8];
+        desiredbit = input[newpos/8] & Positions[newpos%8]; 
         if (desiredbit != 0) {
               desiredbit = Positions[newpos%8];
-              permutation[newpos/8] = desiredbit ^ permutation[newpos/8];
+              permutation[bit/8] = desiredbit ^ permutation[bit/8];
         }
   }
 
@@ -80,14 +80,22 @@ void rotarVector(unsigned char *input, unsigned char *permutation, int round){
   for (bit = 0; bit < 56; bit++) {
        
         newpos = bit+rot;
-        if(newpos>=28){
-        
-          newpos-=28;
+        if(rot ==1){
+          if(newpos==28 || newpos == 56){
+           newpos-=28;
+          }
         }
-        desiredbit = input[bit/8] & Positions[bit%8];
+
+        if(rot ==2){
+          if(newpos==28 || newpos==29 || newpos >= 56){
+           newpos-=28;
+          }
+        }
+        
+        desiredbit = input[newpos/8] & Positions[newpos%8]; 
         if (desiredbit != 0) {
               desiredbit = Positions[newpos%8];
-              permutation[newpos/8] = desiredbit ^ permutation[newpos/8];
+              permutation[bit/8] = desiredbit ^ permutation[bit/8];
         }
   }
 
@@ -216,6 +224,7 @@ void generacionKi(unsigned char *K , unsigned char **ki){
   {
     permutationP1[i] = 0;
     permutationRot[i] = 0;
+    Kaux[i] = 0; 
   }
   quitarParidad(K, Kaux);
   PC1fun(Kaux, permutationP1);
@@ -226,10 +235,12 @@ void generacionKi(unsigned char *K , unsigned char **ki){
     {
       permutationP2[t] =0;
     }
-    //¿como separo la cadena?
+    // a rotarVector le paso toda la cadena junta pero los rota por separado y devuelve lass dos cadenas concatenadas
     rotarVector(permutationP1, permutationRot, i);
     PC2fun(permutationRot, permutationP2);
-
+    for(t=0 ; t< 48 ; t++){
+      ki[i][t] = permutationP2[t];
+    }
   }
 
 
