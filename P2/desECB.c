@@ -36,7 +36,6 @@ void generaClaveRandom64(unsigned char *k){
 }
 void leeClave(const char * input,unsigned char *k){
     if(!input||!k)return;
-    int i,j=0;
     sscanf(input,"%02hhx%02hhx%02hhx%02hhx%02hhx%02hhx%02hhx%02hhx",&k[0],&k[1],&k[2],&k[3],&k[4],&k[5],&k[6],&k[7]); 
     return;
 }
@@ -68,8 +67,9 @@ int main(int argc, char** argv) {
         printf("El programa se debe ejecutar asi: desECB [-C|-D -k clave] [-S s] [-i inputFile] [-o outputFile]\n");
         return -1;
         }
+       /*Leemos la clave hexadecimal que nos pasan por argumento*/
        leeClave(argv[3],key);
-       printClave(key);
+       
     }
     
     /*LIBERAR MEMORIA*/
