@@ -20,6 +20,11 @@ void generaClaveRandom64(unsigned char *k){
     for(i=0;i<8;i++){
         k[i]=rand();
     }
+    printf("Su clave generada aleatoriamente en hexadecimal es:");
+    for(i=0;i<8;i++){
+        printf("%x",k[i]);
+    }
+    printf("\n");
     return;
 }
 int main(int argc, char** argv) {
@@ -34,16 +39,8 @@ int main(int argc, char** argv) {
     /*MEMORIA*/
     key= (unsigned char*)malloc(sizeof(unsigned char)*8);
     if(!key) return -1;
-    
-    /*Generacion de clave*/
+    /*Generamos la clave aleatoria*/
     generaClaveRandom64(key);
-    printf("Su clave generada aleatoriamente en hexadecimal es:");
-    for(i=0;i<8;i++){
-        printf("%x",key[i]);
-    }
-    printf("\n");
-
-
     /*LIBERAR MEMORIA*/
     free(key);
     return (EXIT_SUCCESS);
