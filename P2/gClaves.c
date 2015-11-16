@@ -29,10 +29,10 @@ int generaClavesNoEquiprobable(int m){
    int i,end=0;
       int clave;
          clave = rand() % m;
-      // de esta forma es mucho más probable una clave impar que una par
+      // de esta forma es mucho más probable una clave menor que m/2 que una mayor
       while(end==0){
             for(i=0; i<2;i++){
-                    if((clave%2)==0){
+                    if(clave>(m/2)){
                             clave = rand() % m;
                             if(clave==0)continue;
                     }else break;

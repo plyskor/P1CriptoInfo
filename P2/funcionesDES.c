@@ -36,31 +36,35 @@ permutation[bit/8] = desiredbit ^ permutation[bit/8];
         newpos = ((int)PC1[bit])-1;
         desiredbit = input[newpos/8] & Positions[newpos%8]; 
         if (desiredbit != 0) {
-              desiredbit = Positions[newpos%8];
+              desiredbit = Positions[bit%8];
               permutation[bit/8] = desiredbit ^ permutation[bit/8];
         }
   }
-
-
 }
 
 void quitarParidad(unsigned char *input, unsigned char *output){
+  int i;
   int bit, outbit = 0;
+  char desiredbit;
+  i=0;
   for (bit = 0; bit < 64; bit++)
   {
     if(((bit+1)%8)!=0){
-      desirebit = input[bit/8] && Positions[(bit+(bit/8))%8];
+      desiredbit = input[bit/8] & Positions[(bit)%8];
+
       if(desiredbit!=0){
-        output[outbit/8] = desirebit ^ output[outbit/8];
-        outbit++;
+        output[outbit/8] = Positions[(bit-i)%8] ^ output[outbit/8];
       }
+       outbit++;
+    }else{
+      i++;
     }
     
   }
 }
 
 
-void ponerParidad(unsigned char *input, unsigned char *output){
+/*void ponerParidad(unsigned char *input, unsigned char *output){
   //?¿??¿?¿?¿¿?¿?¿?¿¿
   //hacemos paridad impar
   int byte, bit , i ,contparidad = 0;
@@ -82,28 +86,34 @@ void ponerParidad(unsigned char *input, unsigned char *output){
       output[byte] = Positions[7] ^ output[byte];
     }    
   }
-}
+}*/
 
 void PC2fun(unsigned char *input, unsigned char *permutation){
 //permutation debe estar inicializada a 0
   int bit, newpos;
+  /*for (bit=0; bit < 7; bit++){
+    printf("input[%d] = %d\n",bit , input[bit]);
+  }*/
   unsigned char desiredbit;
   for (bit = 0; bit < 48; bit++) {
+       
         newpos = ((int)PC2[bit])-1;
         desiredbit = input[newpos/8] & Positions[newpos%8]; 
         if (desiredbit != 0) {
-              desiredbit = Positions[newpos%8];
+              desiredbit = Positions[bit%8];
               permutation[bit/8] = desiredbit ^ permutation[bit/8];
+             // printf("permutation[%d] = %d, newpos = %d , desiredbit =%d\n",bit/8 , permutation[bit/8], newpos, desiredbit);
         }
   }
-
-
+  
 }
 
 void rotarVector(unsigned char *input, unsigned char *permutation, int round){
   //permutation debe estar inicializada a 0
   int rot = ROUND_SHIFTS[round], bit , newpos;
-
+ /* for (bit=0; bit < 7; bit++){
+    printf("inputRot[%d] = %d\n",bit , input[bit]);
+  }*/
   unsigned char desiredbit;
   for (bit = 0; bit < 56; bit++) {
        
@@ -122,8 +132,9 @@ void rotarVector(unsigned char *input, unsigned char *permutation, int round){
         
         desiredbit = input[newpos/8] & Positions[newpos%8]; 
         if (desiredbit != 0) {
-              desiredbit = Positions[newpos%8];
+              desiredbit = Positions[bit%8];
               permutation[bit/8] = desiredbit ^ permutation[bit/8];
+              //printf("permutationRot[%d] = %d, newpos = %d , desiredbit =%d\n",bit/8 , permutation[bit/8], newpos, desiredbit);
         }
   }
 
@@ -223,6 +234,16 @@ void cajaSfun(unsigned char *input, unsigned char *output){
 
 
 void DES(unsigned char *input, unsigned char *k ,unsigned char *output){
+ unsigned char **ki;
+  int i,j;
+
+  ki = (unsigned char**)malloc((sizeof(unsigned char*)) * 16);
+  for(i = 0; i<16; i++){
+      ki[i] = (unsigned char*)malloc((sizeof(unsigned char))*6);
+  }
+  
+    generacionKi(k, ki);
+
   //P1
   //Rondas(16)
     //F:
@@ -232,6 +253,10 @@ void DES(unsigned char *input, unsigned char *k ,unsigned char *output){
     //XOR con L0
 
   
+for(i = 0; i<16; i++){
+    free(ki[i]);
+  }
+  free(ki);
 
 
 }
@@ -243,19 +268,33 @@ void generacionKi(unsigned char *K , unsigned char **ki){
     //Desplazo (cada uno de los subloques)
     //Permutacion PC2
     //Concateno
-  unsigned char permutationP1[56];
-  unsigned char permutationRot[56];
-  unsigned char permutationP2[48];
-  unsigned char  Kaux[56];
+  unsigned char *permutationP1;
+  unsigned char *permutationRot;
+  unsigned char *permutationP2;
+  unsigned char *Kaux;
+
+  permutationP1 = (unsigned char*)malloc(7);
+  permutationRot = (unsigned char*)malloc(7);
+  permutationP2 = (unsigned char*)malloc(6);
+  Kaux = (unsigned char*)malloc(7);
+  
   int i,t;
-  for (i = 0; i < 56; i++)
+  for (i = 0; i < 7; i++)
   {
     permutationP1[i] = 0;
     permutationRot[i] = 0;
     Kaux[i] = 0; 
   }
-  quitarParidad(K, Kaux);
-  PC1fun(Kaux, permutationP1);
+  //printf("Antes de quitar paridad\n");
+  /*quitarParidad(K, Kaux);
+for(i=0;i<7;i++){
+      printf("Kaux[%d] = %d\n",i, Kaux[i]);
+    }  printf("Antes de PC1\n");*/
+  PC1fun(K, permutationP1);
+
+  /*for(i=0;i<7;i++){
+      printf("pc1[%d] = %d\n",i, permutationP1[i]);
+    }*/
 
   for (i = 0; i < 16; i++)
   {
@@ -264,13 +303,29 @@ void generacionKi(unsigned char *K , unsigned char **ki){
       permutationP2[t] =0;
     }
     // a rotarVector le paso toda la cadena junta pero los rota por separado y devuelve lass dos cadenas concatenadas
+ 
+
     rotarVector(permutationP1, permutationRot, i);
+   
+    for (t = 0; t < 7; t++)
+    {
+      permutationP1[t] =permutationRot[t];
+    }
+     
     PC2fun(permutationRot, permutationP2);
-    //FALTA PONER PARIDAD!!!! 
-    for(t=0 ; t< 48 ; t++){
+   
+
+    for(t=0 ; t< 6 ; t++){
       ki[i][t] = permutationP2[t];
+      printf("k = %d\n",ki[i][t]);
     }
   }
+
+  /**************¿¿PORQUE PETAAN????**************/
+  /*free(permutationRot);
+  free(permutationP2);
+  free(permutationP1);
+  free(Kaux);*/
 
 
 }
