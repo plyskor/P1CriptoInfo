@@ -89,7 +89,7 @@ Para las claves no equiprobables hemos escrito el siguiente código:
 
 \begin{lstlisting}
 for(i=0; i<2;i++){
-	if((clave%2)==0){
+	if((clave>m/2)==0){
 		clave = rand() % m;
 	}else break;
 }
@@ -97,7 +97,7 @@ for(i=0; i<2;i++){
 
 
 
-De esta forma es mucho más probable que mi clave sea una clave impar en vez de una par. 
+De esta forma es mucho más probable que mi clave sea una clave menor que m/2 que mayor. 
 
 
 Los resultados obtenidos tras probar el código son:
@@ -109,15 +109,15 @@ Los resultados obtenidos tras probar el código son:
 
 Para implementar el DES hemos creado un fichero que se llama \textit{funcionesDES.c} en el que están todas las funciones necesarias para el método.
 
-La idea de lass funciones de permutación es la siguiente:
+La idea de las funciones de permutación es la siguiente:
 
- Guardo el número que leo en la matriz de permutación, que es la posición del bit que va a ir en la posición 
+ Guardo el número que leo en la matriz de permutación, que es la posición del bit que va a ir en e 
  
  Miro si ese bit es un 0 (positions[bit\%8] tiene un 1 en el bit que estoy mirando).
  
  Si es un 0 no hago nada ya que he inicializado permutation a 0.
  
- Si no es un cero meto en desire bit un 1 en la posicion apropiada y hago un 
+ Si no es un cero meto en desired bit un 1 en la posicion apropiada y hago un 
  XOR con el byte que ya hubiera en permutation, de forma que solo cambio el bit deseado
 
 
