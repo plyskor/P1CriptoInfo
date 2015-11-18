@@ -23,6 +23,9 @@ void copiar(unsigned char *src,unsigned char *dst,int tam);
 void Efun(unsigned char *input, unsigned char *permutation);
 void Ffun(unsigned char *r,unsigned char *ki,unsigned char *res);
 void XORtam(unsigned char *a,unsigned char*b,int tam,unsigned char *out);
+void Pfun(unsigned char *input, unsigned char *permutation);
+void IPinvfun(unsigned char *input, unsigned char *permutation);
+void combinar(unsigned char *left,unsigned char *right,unsigned char *res);
 #ifdef	__c
 }
 #endif

@@ -79,6 +79,36 @@ void IPfun(unsigned char *input, unsigned char *permutation){
   }
   
 }
+void combinar(unsigned char *left,unsigned char *right,unsigned char *res){
+    if(!left||!right||!res)return;
+    int i;
+    for(i=0;i<4;i++){
+        res[i]=left[i];
+    }
+    for(i=4;i<8;i++){
+        res[i]=right[i-4];
+    }
+    return;
+}
+void IPinvfun(unsigned char *input, unsigned char *permutation){
+    //permutation debe estar inicializada a 0
+  int bit, newpos;
+  /*for (bit=0; bit < 7; bit++){
+    printf("input[%d] = %d\n",bit , input[bit]);
+  }*/
+  unsigned char desiredbit;
+  for (bit = 0; bit < 48; bit++) {
+       
+        newpos = ((int)IP_INV[bit])-1;
+        desiredbit = input[newpos/8] & Positions[newpos%8]; 
+        if (desiredbit != 0) {
+              desiredbit = Positions[bit%8];
+              permutation[bit/8] = desiredbit ^ permutation[bit/8];
+             // printf("permutation[%d] = %d, newpos = %d , desiredbit =%d\n",bit/8 , permutation[bit/8], newpos, desiredbit);
+        }
+  }
+  
+}
 
 void quitarParidad(unsigned char *input, unsigned char *output){
   int i;
@@ -164,6 +194,25 @@ void Efun(unsigned char *input, unsigned char *permutation){
   }
   
 }
+void Pfun(unsigned char *input, unsigned char *permutation){
+//permutation debe estar inicializada a 0
+  int bit, newpos;
+  /*for (bit=0; bit < 7; bit++){
+    printf("input[%d] = %d\n",bit , input[bit]);
+  }*/
+  unsigned char desiredbit;
+  for (bit = 0; bit < 48; bit++) {
+       
+        newpos = ((int)P[bit])-1;
+        desiredbit = input[newpos/8] & Positions[newpos%8]; 
+        if (desiredbit != 0) {
+              desiredbit = Positions[bit%8];
+              permutation[bit/8] = desiredbit ^ permutation[bit/8];
+             // printf("permutation[%d] = %d, newpos = %d , desiredbit =%d\n",bit/8 , permutation[bit/8], newpos, desiredbit);
+        }
+  }
+  
+}
 
 void rotarVector(unsigned char *input, unsigned char *permutation, int round){
   //permutation debe estar inicializada a 0
@@ -208,20 +257,27 @@ void XORtam(unsigned char *a,unsigned char*b,int tam,unsigned char *out){
 void Ffun(unsigned char *r,unsigned char *ki,unsigned char *res){
     if(!r||!ki)return;
     /*Declaraciones*/
-    unsigned char *exR,*xor;
+    unsigned char *exR,*xor,*aux;
     /*Memoria*/
     exR=(unsigned char*)malloc(6*sizeof(unsigned char));
     if(!exR)return;
     xor=(unsigned char*)malloc(6*sizeof(unsigned char));
     if(!xor)return;
+    aux=(unsigned char*)malloc(4*sizeof(unsigned char));
+    if(!aux)return;
     memset(exR,0,6);
     /*Expansion*/
     Efun(r,exR);
     XORtam(exR,ki,6,xor);
+    memset(aux,0,4);
+    cajaSfun(xor,aux);
+    memset(res,0,4);
+    Pfun(aux,res);
     return;
     /*?¿MEMORIA?¿*/
     free(xor);
     free(exR);
+    free(aux);
     
 }
 
