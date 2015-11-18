@@ -41,6 +41,44 @@ permutation[bit/8] = desiredbit ^ permutation[bit/8];
         }
   }
 }
+void dividir(unsigned char *in,unsigned char *left,unsigned char* right){
+    if(!in||!left||!right)return;
+    int i;
+    for(i=0;i<4;i++){
+        left[i]=in[i];
+    }
+    for(i=4;i<8;i++){
+        right[i-4]=in[i];
+    }
+    return;
+}
+void copiar(unsigned char *src,unsigned char *dst,int tam){
+    if(!src||!dst||tam<=0)return;
+    int i;
+    for(i=0;i<tam;i++){
+        dst[i]=src[i];
+    }
+    return;
+}
+void IPfun(unsigned char *input, unsigned char *permutation){
+    //permutation debe estar inicializada a 0
+  int bit, newpos;
+  /*for (bit=0; bit < 7; bit++){
+    printf("input[%d] = %d\n",bit , input[bit]);
+  }*/
+  unsigned char desiredbit;
+  for (bit = 0; bit < 48; bit++) {
+       
+        newpos = ((int)IP[bit])-1;
+        desiredbit = input[newpos/8] & Positions[newpos%8]; 
+        if (desiredbit != 0) {
+              desiredbit = Positions[bit%8];
+              permutation[bit/8] = desiredbit ^ permutation[bit/8];
+             // printf("permutation[%d] = %d, newpos = %d , desiredbit =%d\n",bit/8 , permutation[bit/8], newpos, desiredbit);
+        }
+  }
+  
+}
 
 void quitarParidad(unsigned char *input, unsigned char *output){
   int i;
@@ -107,6 +145,25 @@ void PC2fun(unsigned char *input, unsigned char *permutation){
   }
   
 }
+void Efun(unsigned char *input, unsigned char *permutation){
+//permutation debe estar inicializada a 0
+  int bit, newpos;
+  /*for (bit=0; bit < 7; bit++){
+    printf("input[%d] = %d\n",bit , input[bit]);
+  }*/
+  unsigned char desiredbit;
+  for (bit = 0; bit < 48; bit++) {
+       
+        newpos = ((int)E[bit])-1;
+        desiredbit = input[newpos/8] & Positions[newpos%8]; 
+        if (desiredbit != 0) {
+              desiredbit = Positions[bit%8];
+              permutation[bit/8] = desiredbit ^ permutation[bit/8];
+             // printf("permutation[%d] = %d, newpos = %d , desiredbit =%d\n",bit/8 , permutation[bit/8], newpos, desiredbit);
+        }
+  }
+  
+}
 
 void rotarVector(unsigned char *input, unsigned char *permutation, int round){
   //permutation debe estar inicializada a 0
@@ -140,7 +197,33 @@ void rotarVector(unsigned char *input, unsigned char *permutation, int round){
 
 
 }
-
+void XORtam(unsigned char *a,unsigned char*b,int tam,unsigned char *out){
+    if(!a||!b||tam<=0)return;
+    int i;
+    for(i=0;i<tam;i++){
+        out[i]=a[i]^b[i];
+    }
+    return;
+}
+void Ffun(unsigned char *r,unsigned char *ki,unsigned char *res){
+    if(!r||!ki)return;
+    /*Declaraciones*/
+    unsigned char *exR,*xor;
+    /*Memoria*/
+    exR=(unsigned char*)malloc(6*sizeof(unsigned char));
+    if(!exR)return;
+    xor=(unsigned char*)malloc(6*sizeof(unsigned char));
+    if(!xor)return;
+    memset(exR,0,6);
+    /*Expansion*/
+    Efun(r,exR);
+    XORtam(exR,ki,6,xor);
+    return;
+    /*?¿MEMORIA?¿*/
+    free(xor);
+    free(exR);
+    
+}
 
 void cajaSfun(unsigned char *input, unsigned char *output){
   
@@ -242,7 +325,7 @@ void DES(unsigned char *input, unsigned char *k ,unsigned char *output){
       ki[i] = (unsigned char*)malloc((sizeof(unsigned char))*6);
   }
   
-    generacionKi(k, ki);
+    //generacionKi(k, ki);
 
   //P1
   //Rondas(16)
