@@ -316,7 +316,8 @@ void cajaSfun(unsigned char *input, unsigned char *output){
         }
 
   }
-
+  printf("LEOAUX:");
+  printbinarray(leoAux,8);
   for(caja=0;caja<8;caja++){
     leo=0;
     poscol =0;
