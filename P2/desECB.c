@@ -8,8 +8,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "funcionesDES.h"
 
+#include "funcionesDES.h"
+void printbincharpad(unsigned char c)
+{
+    for (int i = 7; i >= 0; --i)
+    {
+        putchar( (c & (1 << i)) ? '1' : '0' );
+    }
+    putchar(' ');
+    return;
+}
+void printbinarray(unsigned char*c,int tam){
+    int i;
+    for(i=0;i<tam;i++){
+        printbincharpad(c[i]);
+    }
+    printf("\n");
+    return;
+}
 /*
  * 
  */
@@ -121,18 +138,33 @@ int main(int argc, char** argv) {
         /*Generamos clave aleatoria y las Ki*/
         generaClaveRandom64(key);
         generacionKi(key, ki);
-
+        
         /*A leer bloques de 64 bits (8 char)*/
         while (fgets(bloqueplano, 9, input) != NULL) {
             formatBloque(bloqueplano, bloqueaux);
             memset(bloqueplano,0,9);
             memset(bloquesalida, 0, 8);
+            printf("BLOQUE LEIDO:\nBin:");
+            printbinarray(bloqueaux,8);
+            printf("String:%s\n",bloqueaux);
             IPfun(bloqueaux, bloquesalida);
+            printf("AFTER IP:");
+            printbinarray(bloquesalida,8);
             dividir(bloquesalida, l0, r0);
+            printf("DIVISION:\nLeft:");
+            printbinarray(l0,4);
+            printf("Right:");
+            printbinarray(r0,4);
             memset(bloquesalida, 0, 8);
             /*RONDAS DES*/
             for (ronda = 0; ronda < 16; ronda++) {
+                printf("RONDA %d:\nL0:",ronda+1);
+                printbinarray(l0,4);
+                printf("R0:");
+                printbinarray(r0,4);
                 copiar(r0, l1, 4);
+                printf("L1:");
+                printbinarray(l1,4);
                 Ffun(r0, ki[ronda], fres);
                 XORtam(l0, fres, 4, r1);
                 copiar(r1, r0, 4);

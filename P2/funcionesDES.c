@@ -3,11 +3,11 @@
 #include "Des_tables.c"
 #include "funcionesDES.h"
 
-static unsigned char Positions[8] = {1,2,4,8,16,32,64,128};
+static unsigned char Positions[8] = {128,64,32,16,8,4,2,1};
 
 
 
-
+void printbinarray(unsigned char*c,int tam);
 
 void PC1fun(unsigned char *input, unsigned char *permutation){
   /* EXPLICACION CÓDIGO:
@@ -267,10 +267,20 @@ void Ffun(unsigned char *r,unsigned char *ki,unsigned char *res){
     if(!aux)return;
     memset(exR,0,6);
     /*Expansion*/
+    printf("R0 dentro Ffun:");
+    printbinarray(r,4);
     Efun(r,exR);
+    printf("eESULT:");
+            printbinarray(exR,6);
+    printf("SUBKEY:");
+            printbinarray(ki,6);
     XORtam(exR,ki,6,xor);
+    printf("RESULT:");
+            printbinarray(xor,6);
     memset(aux,0,4);
     cajaSfun(xor,aux);
+    printf("sESULT:");
+            printbinarray(aux,4);
     memset(res,0,4);
     Pfun(aux,res);
     return;
@@ -456,7 +466,7 @@ for(i=0;i<7;i++){
 
     for(t=0 ; t< 6 ; t++){
       ki[i][t] = permutationP2[t];
-      printf("k = %d\n",ki[i][t]);
+     // printf("k = %d\n",ki[i][t]);
     }
   }
 
