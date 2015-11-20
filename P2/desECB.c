@@ -1,10 +1,3 @@
-/* 
- * File:   main.c
- * Author: Jose
- *
- * Created on 16 de noviembre de 2015, 17:18
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -12,7 +5,8 @@
 #include "funcionesDES.h"
 void printbincharpad(unsigned char c)
 {
-    for (int i = 7; i >= 0; --i)
+    int i;
+    for (i = 7; i >= 0; --i)
     {
         putchar( (c & (1 << i)) ? '1' : '0' );
     }

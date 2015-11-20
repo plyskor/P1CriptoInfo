@@ -3,7 +3,7 @@
 #include "Des_tables.c"
 #include "funcionesDES.h"
 
-static unsigned char Positions[8] = {128,64,32,16,8,4,2,1};
+static unsigned char Positions[8] = {1,2,4,8,16,32,64,128};
 
 
 
@@ -306,7 +306,7 @@ void cajaSfun(unsigned char *input, unsigned char *output){
     output[i/2] = 0;
   }
 
-  for (i = 0; i < 48; ++i)
+  for (i = 0; i < 48; ++i)//divido de 6 en 6
   {
     leo = input[i/8];
     desiredbit = leo & Positions[i%8];
@@ -328,7 +328,7 @@ void cajaSfun(unsigned char *input, unsigned char *output){
           newpos-=6;
         }
         desiredbit = leo & Positions[newpos];
-        //printf("BIT : %d , POSITIONS : %d , DESIREDBIT : %d, LEO : %d\n",bit , Positions[newpos] ,desiredbit, leo);
+       // printf("BIT : %d , POSITIONS : %d , DESIREDBIT : %d, LEO : %d\n",bit , Positions[newpos] ,desiredbit, leo);
         if (desiredbit != 0) {
               desiredbit = Positions[bit];
               poscol = desiredbit ^ poscol;
@@ -354,7 +354,6 @@ void cajaSfun(unsigned char *input, unsigned char *output){
 
       poscol = poscol & androw;
       leo = poscol;
-  
       posrow=0;
       for(bit = 0; bit<2;bit++){//rotamos para hacer swap de los dos ultimos bits
         newpos = bit+1;
@@ -383,7 +382,7 @@ void cajaSfun(unsigned char *input, unsigned char *output){
 }
 
 
-void DES(unsigned char *input, unsigned char *k ,unsigned char *output){
+/*void DES(unsigned char *input, unsigned char *k ,unsigned char *output){
  unsigned char **ki;
   int i,j;
 
@@ -409,7 +408,7 @@ for(i = 0; i<16; i++){
   free(ki);
 
 
-}
+}*/
 
 void generacionKi(unsigned char *K , unsigned char **ki){
   //Para generacion de ki:
