@@ -228,7 +228,7 @@ int main(int argc, char** argv) {
         generacionKi(key, ki);
         /*cosillas de memoria*/
         for(i=0;i<16;i++){
-            printf("K%d:",i);
+            printf("K%d:",i+1);
             printbinarray(ki[i],6);
         }
         kiInv = (unsigned char**) malloc(16 * sizeof (unsigned char*));
