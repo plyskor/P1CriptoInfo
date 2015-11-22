@@ -3,8 +3,8 @@
 #include "Des_tables.c"
 #include "funcionesDES.h"
 
-static unsigned char Positions[8] = {1,2,4,8,16,32,64,128};
-
+static unsigned char PositionsS[8] = {1,2,4,8,16,32,64,128};
+static unsigned char Positions[8] = {128,64,32,16,8,4,2,1};
 
 
 void printbinarray(unsigned char*c,int tam);
@@ -67,7 +67,7 @@ void IPfun(unsigned char *input, unsigned char *permutation){
     printf("input[%d] = %d\n",bit , input[bit]);
   }*/
   unsigned char desiredbit;
-  for (bit = 0; bit < 48; bit++) {
+  for (bit = 0; bit < 64; bit++) {
        
         newpos = ((int)IP[bit])-1;
         desiredbit = input[newpos/8] & Positions[newpos%8]; 
@@ -97,7 +97,7 @@ void IPinvfun(unsigned char *input, unsigned char *permutation){
     printf("input[%d] = %d\n",bit , input[bit]);
   }*/
   unsigned char desiredbit;
-  for (bit = 0; bit < 48; bit++) {
+  for (bit = 0; bit < 64; bit++) {
        
         newpos = ((int)IP_INV[bit])-1;
         desiredbit = input[newpos/8] & Positions[newpos%8]; 
@@ -201,7 +201,7 @@ void Pfun(unsigned char *input, unsigned char *permutation){
     printf("input[%d] = %d\n",bit , input[bit]);
   }*/
   unsigned char desiredbit;
-  for (bit = 0; bit < 48; bit++) {
+  for (bit = 0; bit < 32; bit++) {
        
         newpos = ((int)P[bit])-1;
         desiredbit = input[newpos/8] & Positions[newpos%8]; 
@@ -283,6 +283,8 @@ void Ffun(unsigned char *r,unsigned char *ki,unsigned char *res){
             printbinarray(aux,4);
     memset(res,0,4);
     Pfun(aux,res);
+    printf("pESULT:");
+            printbinarray(res,4);
     return;
     /*?¿MEMORIA?¿*/
     free(xor);
@@ -296,8 +298,8 @@ void cajaSfun(unsigned char *input, unsigned char *output){
   int caja, bit, posrow=0 , poscol=0 ,poscolaux = 0, newpos=0 , i;
   unsigned char leoAux[8];
   unsigned char desiredbit, leo, aux;
-  unsigned char androw = 3;
-  unsigned char andcol = 15;
+  unsigned char androw = 192;
+  unsigned char andcol = 240;
   aux = 0;
 
   for (i = 0; i < 8; ++i)
@@ -316,19 +318,19 @@ void cajaSfun(unsigned char *input, unsigned char *output){
         }
 
   }
-  printf("LEOAUX:");
-  printbinarray(leoAux,8);
+  //printf("LEOAUX:");
+ // printbinarray(leoAux,8);
   for(caja=0;caja<8;caja++){
     leo=0;
     poscol =0;
     leo = leoAux[caja];
       for(bit = 0; bit<6;bit++){//rotamos para obtener la pos de la columna
         newpos = bit+1;
-        if(newpos>=6){
-          newpos-=6;
+        if(newpos==6){
+          newpos=0;
         }
         desiredbit = leo & Positions[newpos];
-       // printf("BIT : %d , POSITIONS : %d , DESIREDBIT : %d, LEO : %d\n",bit , Positions[newpos] ,desiredbit, leo);
+       //printf("BIT : %d , POSITIONS : %d , DESIREDBIT : %d, LEO : %d\n",bit , Positions[newpos] ,desiredbit, leo);
         if (desiredbit != 0) {
               desiredbit = Positions[bit];
               poscol = desiredbit ^ poscol;
@@ -336,24 +338,29 @@ void cajaSfun(unsigned char *input, unsigned char *output){
       }
      
       poscolaux = poscol & andcol;
+      poscolaux = poscolaux >> 4;
+     // printf("columna %d\n", poscolaux);
 
       leo = poscol;
       poscol=0;
        for(bit = 0; bit<6;bit++){//rotamos para obtener la pos de la fila
         newpos = bit+4;
-        if(newpos>=6){
+        if(newpos>5){
           newpos-=6;
         }
         desiredbit = leo & Positions[newpos];
+        //printf("BIT : %d , POSITIONS : %d newpos %d , DESIREDBIT : %d, LEO : %d\n",bit , Positions[newpos] , newpos ,desiredbit, leo);
+
         if (desiredbit != 0) {
               desiredbit = Positions[bit];
               poscol = desiredbit ^ poscol;
         }
          
       }
-
+      
       poscol = poscol & androw;
       leo = poscol;
+     // printf("leo %d\n", leo);
       posrow=0;
       for(bit = 0; bit<2;bit++){//rotamos para hacer swap de los dos ultimos bits
         newpos = bit+1;
@@ -361,19 +368,28 @@ void cajaSfun(unsigned char *input, unsigned char *output){
           newpos-=2;
         }
         desiredbit = leo & Positions[newpos];
+        //printf("BIT : %d , POSITIONS : %d newpos %d , DESIREDBIT : %d, LEO : %d\n",bit , Positions[newpos] , newpos ,desiredbit, leo);
+
         if (desiredbit != 0) {
               desiredbit = Positions[bit];
       
               posrow = desiredbit ^ posrow;
         }
         
+        
       }
+      posrow = posrow >> 6;
+       // printf("fila %d\n", posrow);
       //printf("CAJA %d, FILA : %d , COLUMNA : %d\n", caja, posrow, poscolaux );
       if((caja%2)==0){
-        aux = 0x00 ^ S_BOXES[caja][posrow][poscolaux];
+                  aux =S_BOXES[caja][posrow][poscolaux] <<4;
+                 // printf("uax1 %d\n", aux);
+        
+
        
       }else{
-        output[caja/2] = S_BOXES[caja][posrow][poscolaux] << 4;
+          
+        output[caja/2] = S_BOXES[caja][posrow][poscolaux];
          output[caja/2] =  output[caja/2] ^ aux;
          aux = 0;
       }
@@ -421,6 +437,7 @@ void generacionKi(unsigned char *K , unsigned char **ki){
   unsigned char *permutationRot;
   unsigned char *permutationP2;
   unsigned char *Kaux;
+  
 
   permutationP1 = (unsigned char*)malloc(7);
   permutationRot = (unsigned char*)malloc(7);
@@ -434,12 +451,16 @@ void generacionKi(unsigned char *K , unsigned char **ki){
     permutationRot[i] = 0;
     Kaux[i] = 0; 
   }
+  
+ // printbinarray(K,8);
   //printf("Antes de quitar paridad\n");
   /*quitarParidad(K, Kaux);
 for(i=0;i<7;i++){
       printf("Kaux[%d] = %d\n",i, Kaux[i]);
     }  printf("Antes de PC1\n");*/
   PC1fun(K, permutationP1);
+ //    printbinarray(permutationP1,7);
+
 
   /*for(i=0;i<7;i++){
       printf("pc1[%d] = %d\n",i, permutationP1[i]);
@@ -453,8 +474,9 @@ for(i=0;i<7;i++){
     }
     // a rotarVector le paso toda la cadena junta pero los rota por separado y devuelve lass dos cadenas concatenadas
  
-
+    //printbinarray(permutationP1,7);
     rotarVector(permutationP1, permutationRot, i);
+   // printbinarray(permutationRot,7);
    
     for (t = 0; t < 7; t++)
     {
@@ -462,11 +484,11 @@ for(i=0;i<7;i++){
     }
      
     PC2fun(permutationRot, permutationP2);
-   
+   //printbinarray(permutationP2,6);
 
     for(t=0 ; t< 6 ; t++){
       ki[i][t] = permutationP2[t];
-     // printf("k = %d\n",ki[i][t]);
+      printf("k = %d\n",ki[i][t]);
     }
   }
 
