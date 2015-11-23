@@ -110,7 +110,7 @@ char randascii(int t){
 	return input;
 }
 
-void main(int argc, char const *argv[])
+int main(int argc, char const *argv[])
 {
 	/* Este es un programa de prueba para comprobar el criterio SAC
 	Cogemos una entrada cuyo primer bit es 0 y comprobamos la probabilidad que tiene
@@ -192,5 +192,5 @@ void main(int argc, char const *argv[])
 		printf("prob1C[%d] : %lf\n",t ,  prob1C[t]);
 	}
 
-	return;
+	return 0;
 }
