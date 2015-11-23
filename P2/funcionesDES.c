@@ -7,7 +7,24 @@ static unsigned char PositionsS[8] = {1,2,4,8,16,32,64,128};
 static unsigned char Positions[8] = {128,64,32,16,8,4,2,1};
 
 
-void printbinarray(unsigned char*c,int tam);
+void printbincharpad(unsigned char c)
+{
+    int i;
+    for (i = 7; i >= 0; --i)
+    {
+        putchar( (c & (1 << i)) ? '1' : '0' );
+    }
+    putchar(' ');
+    return;
+}
+void printbinarray(unsigned char*c,int tam){
+    int i;
+    for(i=0;i<tam;i++){
+        printbincharpad(c[i]);
+    }
+    printf("\n");
+    return;
+}
 
 void PC1fun(unsigned char *input, unsigned char *permutation){
   /* EXPLICACION CÓDIGO:

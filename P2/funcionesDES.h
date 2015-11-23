@@ -10,7 +10,8 @@
 #ifdef	__c
 extern "C" {
 #endif
-	
+void printbincharpad(unsigned char c);
+void printbinarray(unsigned char*c,int tam);
 void PC1fun(unsigned char *input, unsigned char *permutation);
 void IPfun(unsigned char *input, unsigned char *permutation);
 void quitarParidad(unsigned char *input, unsigned char *output);

@@ -3,24 +3,7 @@
 #include <time.h>
 
 #include "funcionesDES.h"
-void printbincharpad(unsigned char c)
-{
-    int i;
-    for (i = 7; i >= 0; --i)
-    {
-        putchar( (c & (1 << i)) ? '1' : '0' );
-    }
-    putchar(' ');
-    return;
-}
-void printbinarray(unsigned char*c,int tam){
-    int i;
-    for(i=0;i<tam;i++){
-        printbincharpad(c[i]);
-    }
-    printf("\n");
-    return;
-}
+
 /*
  * 
  */
