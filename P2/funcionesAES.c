@@ -6,14 +6,14 @@
 
 
 int hexaAdecimal(char hexadecimal){
-	printf("hexadecimal %c\n",hexadecimal);
+	//printf("hexadecimal %c\n",hexadecimal);
 	if(hexadecimal>96 && hexadecimal<103){
-		printf("Minuscula\n");
+		//printf("Minuscula\n");
 		hexadecimal-= 32;
 	}
 	if(hexadecimal>64 && hexadecimal< 71){
-		printf("hexaMayus %d\n",hexadecimal);
-		printf("hmm.. %d\n", (int)(hexadecimal-54));
+		//printf("hexaMayus %d\n",hexadecimal);
+		//printf("hmm.. %d\n", (int)(hexadecimal-54));
 		return (int)((hexadecimal-54)-'0');
 	}else{
 		return (int)(hexadecimal-'0');
@@ -27,9 +27,10 @@ void cajaS_AESfun(char *input, char *output){
 	int column = (int)hexaAdecimal(input[1]);
 	printf("column %d\n",column );
 	strcpy(output,DIRECT_SBOX[row][column]);
+	printf("outS %s\n", output);
 }
 
-void noLinealidadSboxes(char *a, char *b){
+/*void noLinealidadSboxes(char *a, char *b){
 	//función lineal : f(a+b) = f(a) + f(b)
 	char output1[2];
 	char output2[2];
@@ -37,4 +38,4 @@ void noLinealidadSboxes(char *a, char *b){
 	cajaS_AESfun(b,output2);
 
 
-}
+}*/

@@ -77,7 +77,7 @@ char cajaSDES_Simp(unsigned char input , int caja){
       }
       posrow = posrow >> 6;
        // printf("fila %d\n", posrow);
-      printf("CAJA %d, FILA : %d , COLUMNA : %d\n", caja, posrow, poscolaux );
+      //printf("CAJA %d, FILA : %d , COLUMNA : %d\n", caja, posrow, poscolaux );
       
       output =S_BOXES[caja][posrow][poscolaux] <<4;
          //printf("out1 %d\n", output);
@@ -102,49 +102,53 @@ int main(int argc, char const *argv[])
 	Luego complementamos es bit y vemos que las probabilidades de salida siguen siendo 
 	las mismas (1/2)*/
 	unsigned char output = 0, input =0, aux = 0, inputC = 0;
-	double prob1[4], prob0[4], prob1C[4] , prob0C[4] ;
-	int  i, t;
+	double prob1[4], prob0[4], prob1C[4] , prob0C[4] , probsij[16];
+	int  i, t, ind =0;
 	memset(prob1, 0 , 8);
 	memset(prob0, 0 , 8);
 	memset(prob1C, 0 , 8);
 	memset(prob0C, 0 , 8);
+	memset(probsij, 0 , 16);
 
-	for(t=0; t<254; t++){
-		input = t+1;
-		printf("input %d\n", input);
-		printbincharpad(input);
+	for(t=0; t<256; t++){
+		input = t;
+		//printf("input %d\n", input);
+		//printbincharpad(input);
 		output = cajaSDES_Simp(input, 0);
 		printf("output %d\n", output);
 		printbincharpad(output);
 		printf("\n");
 		for (i = 0; i < 4; i++)
 		{
-			printbincharpad(Positions[i]);
+			//printbincharpad(Positions[i]);
 			aux = output & Positions[i];
-			printf("aux :");
-			printbincharpad(aux);
-			printf("\n");
+			//printf("aux :");
+			//printbincharpad(aux);
+			//printf("\n");
 			if(aux!= 0){
 				prob1[i]++;
 			}else{
 				prob0[i]++;
 			}	
 		}
+		ind = output >>4;
+		printf("ind : %d\n", ind);
+		probsij[ind]++;
 		//Complemento input
 		inputC = input ^ 255;
 		output = 0;
-		printf("input %d\n", inputC);
-		printbincharpad(inputC);
+		//printf("input %d\n", inputC);
+		//printbincharpad(inputC);
 		output = cajaSDES_Simp(inputC, 0);
-		printf("output %d\n", output);
-		printbincharpad(output);
-		printf("\n");
+		//printf("output %d\n", output);
+		//printbincharpad(output);
+		//printf("\n");
 		for (i = 0; i < 4; i++)
 		{
 			aux = output & Positions[i];
-			printf("aux :");
-			printbincharpad(aux);
-			printf("\n");
+			//printf("aux :");
+			//printbincharpad(aux);
+			//printf("\n");
 			if(aux!= 0){
 				prob1C[i]++;
 			}else{
@@ -162,10 +166,10 @@ int main(int argc, char const *argv[])
 
 
 	for(t=0; t<4;t++){
-		prob0[t] = prob0[t]/254;
-		prob1[t] = prob1[t]/254;
-		prob0C[t] = prob0C[t]/254;
-		prob1C[t] = prob1C[t]/254;
+		prob0[t] = prob0[t]/257;
+		prob1[t] = prob1[t]/257;
+		prob0C[t] = prob0C[t]/257;
+		prob1C[t] = prob1C[t]/257;
 	}
 
 	for(t=0; t<4;t++){
@@ -174,6 +178,13 @@ int main(int argc, char const *argv[])
 		printf("prob0C[%d] : %lf\n",t ,  prob0C[t]);
 		printf("prob1C[%d] : %lf\n",t ,  prob1C[t]);
 	}
+
+
+
+	for(t=0;t<16;t++){
+		printf("probs[%d] :%lf\n",t,probsij[t]/257);
+	}
+	
 
 	return 0;
 }

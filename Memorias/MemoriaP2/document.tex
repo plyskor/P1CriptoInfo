@@ -151,6 +151,18 @@ Primero vamos a explicar qué es cada uno de estos principios.
 	Busca que no haya dependencia entre los bits de salida (si cambia $c_3$, no condiciona a que cambie o no $c_2$) 
 	$$\forall i,j,k \text{  } P(c_ic_j|\overline{b_k}) = P(c_i|\overline{b_k})\cdot P(c_j|\overline{b_k})$$
 	
+	Para comprobar esto hemos hecho un programa que cuenta la probabilidad de 0 y 1 de cada bit de salida de las cajas-S para las 255 posibles entradas.
+	
+	Vemos que las probabilididades son todas $0.4980..\approx 0.5$, por lo que \textbf{se cumple el criterio SAC}.
+	
+	Para BIC no comprobamos que $ P(c_ic_j|\overline{b_k}) = P(c_i|\overline{b_k})\cdot P(c_j|\overline{b_k})$, sino que
+	$$ P(c_ic_jc_kc_l|\overline{b_k}) = P(c_i|\overline{b_k})\cdot P(c_j|\overline{b_k})\cdot P(c_k|\overline{b_k})\cdot P(c_l|\overline{b_k})$$
+
+	Para esto calculamos $P(c_ic_jc_kc_l|\overline{b_k})$, que nos sale $\approx 0.062$.
+	
+	Las probabilidades $P(c_i|\overline{b_k})$ ya las habiamos calculado para el SAC y habíamos vist que son todas iguales, por lo que si hacemso $(0.4980..)^4$ vemos que nos da $\approx 0.062$.
+	
+	Por lo que queda comprobado que también cumple BIC.
 \end{itemize} 
 
 \printindex
