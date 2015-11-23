@@ -7,24 +7,7 @@
 
 static unsigned char Positions[8] = {128,64,32,16,8,4,2,1};
 
-void printbincharpad(unsigned char c)
-{
-    int i;
-    for (i = 7; i >= 0; --i)
-    {
-        putchar( (c & (1 << i)) ? '1' : '0' );
-    }
-    putchar(' ');
-    return;
-}
-void printbinarray(unsigned char*c,int tam){
-    int i;
-    for(i=0;i<tam;i++){
-        printbincharpad(c[i]);
-    }
-    printf("\n");
-    return;
-}
+
 
 char cajaSDES_Simp(unsigned char input , int caja){
 	int bit, posrow=0 , poscol=0 ,poscolaux = 0, newpos=0 , i;

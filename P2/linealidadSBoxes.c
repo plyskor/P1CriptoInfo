@@ -10,8 +10,7 @@
 #include <time.h>
 #include <string.h>
 #include "funcionesDES.h"
-#define EXIT_FAILURE -1
-#define EXIT_SUCCESS 0
+
 
 /*
  * 
