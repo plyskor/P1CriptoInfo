@@ -132,5 +132,26 @@ A su vez el programa suma $a + b$ y aplica la caja-S a dicha suma y vemos que lo
 
 La no linealidad de las cajas-S del AES es muy importante ya que las hacen resistentes al criptoanálisis lineal.
 
+\section{Ejercicio X - SAC y BIC para las cajas-S del DES}
+
+Primero vamos a explicar qué es cada uno de estos principios.
+
+\begin{itemize}
+	
+	\item \textbf{SAC} (Strict avalanch criterion)
+	
+	Este principio dice que la probabilidad de cambio debe estar equidistribuida.
+	
+	Esto es, que si cambio un bit de entrada, la probabilidad de que un bit de salida sea 0 o 1 es la misma.
+	$$\forall i,j\text{  }P(c_i=1|\overline{b_j})= P(c_i=0|\overline{b_j}) = \frac{1}{2}$$
+	Siendo $\overline{b_j}$ que he cambiado el bit $b_j$
+	
+	\item \textbf{BIC} (bit independence criterion)
+	
+	Busca que no haya dependencia entre los bits de salida (si cambia $c_3$, no condiciona a que cambie o no $c_2$) 
+	$$\forall i,j,k \text{  } P(c_ic_j|\overline{b_k}) = P(c_i|\overline{b_k})\cdot P(c_j|\overline{b_k})$$
+	
+\end{itemize} 
+
 \printindex
 \end{document}
