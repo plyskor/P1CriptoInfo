@@ -139,7 +139,7 @@ int main(int argc, char** argv) {
         }
         /*Generamos clave aleatoria y las Ki*/
         generaClaveRandom64(key);
-        generacionKi("Santiago", ki);
+        generacionKi(key, ki);
         
         /*A leer bloques de 64 bits (8 char)*/
         while (!fin) {
