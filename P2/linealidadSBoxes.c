@@ -28,7 +28,7 @@ void generaBloque(unsigned char *res,int n){
 int main(int argc, char** argv) {
     /*Delclaraciones*/
     unsigned short n=-1,i;
-    unsigned char *a,*b,*amasb,*fa,*fb,*famasb,*aux,*faux;
+    unsigned char *a,*b,*amasb,*fa,*fb,*famasb,*faux;
     /*Argumentos de entrada*/
     if(argc!=3){
         printf("El programa se debe ejecutar como linealidadSBoxes -n N , siendo N el numero de iteraciones que se desean\n");
@@ -50,16 +50,10 @@ int main(int argc, char** argv) {
         if(b)free(b);
         return EXIT_FAILURE;
     }
-    aux=(unsigned char *)malloc(6*sizeof(unsigned char));
-    if(!aux){
-        if(amasb)free(amasb);
-        if(a)free(a);
-        if(b)free(b);
-        return EXIT_FAILURE;
-    }
+    
      fa=(unsigned char *)malloc(4*sizeof(unsigned char));
     if(!fa) {
-        if(aux)free(aux);
+        
         if(amasb)free(amasb);
         if(a)free(a);
         if(b)free(b);
@@ -68,7 +62,7 @@ int main(int argc, char** argv) {
     fb=(unsigned char *)malloc(4*sizeof(unsigned char));
     if(!fb) {
         if(fa)free(fa);
-        if(aux)free(aux);
+        
         if(amasb)free(amasb);
         if(a)free(a);
         if(b)free(b);
@@ -78,7 +72,7 @@ int main(int argc, char** argv) {
     if(!famasb){
         if(fb)free(fb);
         if(fa)free(fa);
-        if(aux)free(aux);
+        
         if(amasb)free(amasb);
         if(a)free(a);
         if(b)free(b);
@@ -89,7 +83,7 @@ int main(int argc, char** argv) {
         if(famasb)free(famasb);
         if(fb)free(fb);
         if(fa)free(fa);
-        if(aux)free(aux);
+        
         if(amasb)free(amasb);
         if(a)free(a);
         if(b)free(b);
@@ -101,7 +95,7 @@ int main(int argc, char** argv) {
         memset(a,0,6);
         memset(b,0,6);
         memset(amasb,0,6);
-        memset(aux,0,6);
+        
         memset(fa,0,4);
         memset(fb,0,4);
         memset(famasb,0,4);
@@ -128,7 +122,7 @@ int main(int argc, char** argv) {
         if(famasb)free(famasb);
         if(fb)free(fb);
         if(fa)free(fa);
-        if(aux)free(aux);
+        
         if(amasb)free(amasb);
         if(a)free(a);
         if(b)free(b);
