@@ -155,7 +155,7 @@ int main(int argc, char** argv) {
                     fin=1;
                     if(i==0)return 0;  
                     while(i<8){
-                        bloqueaux[i]=0;
+                        bloqueaux[i]=' ';
                         i++;
                     }
                 }else{
