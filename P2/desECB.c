@@ -143,6 +143,12 @@ int main(int argc, char** argv) {
         
         /*A leer bloques de 64 bits (8 char)*/
         while (!fin) {
+            memset(bloqueaux, 0 ,8);
+            memset(r1, 0, 4);
+            memset(l1, 0, 4);
+            memset(l0, 0, 4);
+            memset(r0, 0, 4);
+            memset(bloquecifrado, 0 , 8);
             for(i=0;i<8;i++){
                 leido=fgetc(input);
                 if(feof(input)){
@@ -241,6 +247,13 @@ int main(int argc, char** argv) {
         inverseKi(ki, kiInv);
         /*empieza el des*/
         while (!fin) {
+            memset(bloqueaux, 0 ,8);
+            memset(r1, 0, 4);
+            memset(l1, 0, 4);
+            memset(l0, 0, 4);
+            memset(r0, 0, 4);
+            memset(bloquecifrado, 0 , 8);
+           // memset(bloquesalida, 0, 8);
             for(i=0;i<8;i++){
                 leido=fgetc(input);
                 if(feof(input)){
