@@ -30,7 +30,7 @@ int main(int argc, char** argv) {
     unsigned char *a,*b,*amasb,*fa,*fb,*famasb,*faux;
     /*Argumentos de entrada*/
     if(argc!=3){
-        printf("El programa se debe ejecutar como linealidadSBoxes -n N , siendo N el numero de iteraciones que se desean\n");
+        printf("El programa se debe ejecutar como linealidadSBoxesDES -n N , siendo N el numero de iteraciones que se desean\n");
         return EXIT_FAILURE;
     }
     n=atoi(argv[2]);
