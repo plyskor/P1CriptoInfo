@@ -267,24 +267,24 @@ void Ffun(unsigned char *r,unsigned char *ki,unsigned char *res){
     if(!aux)return;
     memset(exR,0,6);
     /*Expansion*/
-    printf("R0 dentro Ffun:");
-    printbinarray(r,4);
+    //printf("R0 dentro Ffun:");
+    //printbinarray(r,4);
     Efun(r,exR);
-    printf("eESULT:");
-            printbinarray(exR,6);
-    printf("SUBKEY:");
-            printbinarray(ki,6);
+    //printf("eESULT:");
+      //      printbinarray(exR,6);
+    //printf("SUBKEY:");
+      //      printbinarray(ki,6);
     XORtam(exR,ki,6,xor);
-    printf("RESULT:");
-            printbinarray(xor,6);
+    //printf("RESULT:");
+      //      printbinarray(xor,6);
     memset(aux,0,4);
     cajaSfun(xor,aux);
-    printf("sESULT:");
-            printbinarray(aux,4);
+    //printf("sESULT:");
+      //      printbinarray(aux,4);
     memset(res,0,4);
     Pfun(aux,res);
-    printf("pESULT:");
-            printbinarray(res,4);
+    //printf("pESULT:");
+      //      printbinarray(res,4);
     return;
     /*?¿MEMORIA?¿*/
     free(xor);
@@ -475,22 +475,22 @@ for(i=0;i<7;i++){
     memset(permutationRot,0,7);
     // a rotarVector le paso toda la cadena junta pero los rota por separado y devuelve lass dos cadenas concatenadas
  
-    printbinarray(permutationP1,7);
+    //printbinarray(permutationP1,7);
     rotarVector(permutationP1, permutationRot, i);
-    printbinarray(permutationRot,7);
+    //printbinarray(permutationRot,7);
    
     for (t = 0; t < 7; t++)
     {
       permutationP1[t] =permutationRot[t];
     }
-    printbinarray(permutationP1,7);
+    //printbinarray(permutationP1,7);
      
     PC2fun(permutationRot, permutationP2);
-   printbinarray(permutationP2,6);
+   //printbinarray(permutationP2,6);
 
     for(t=0 ; t< 6 ; t++){
       ki[i][t] = permutationP2[t];
-      printf("k = %d\n",ki[i][t]);
+      //printf("k = %d\n",ki[i][t]);
     }
   }
 

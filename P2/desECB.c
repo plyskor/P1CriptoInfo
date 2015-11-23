@@ -164,31 +164,31 @@ int main(int argc, char** argv) {
             }
             
             memset(bloquesalida, 0, 8);
-            printf("BLOQUE LEIDO:\nBin:");
-            printbinarray(bloqueaux,8);
-            printf("String:%s\n",bloqueaux);
+            //printf("BLOQUE LEIDO:\nBin:");
+            //printbinarray(bloqueaux,8);
+            //printf("String:%s\n",bloqueaux);
             IPfun(bloqueaux, bloquesalida);
-            printf("AFTER IP:");
-            printbinarray(bloquesalida,8);
+            //printf("AFTER IP:");
+            //printbinarray(bloquesalida,8);
             dividir(bloquesalida, l0, r0);
-            printf("DIVISION:\nLeft:");
-            printbinarray(l0,4);
-            printf("Right:");
-            printbinarray(r0,4);
+            //printf("DIVISION:\nLeft:");
+            //printbinarray(l0,4);
+            //printf("Right:");
+            //printbinarray(r0,4);
             memset(bloquesalida, 0, 8);
             /*RONDAS DES*/
             for (ronda = 0; ronda < 16; ronda++) {
-                printf("RONDA %d:\nL0:",ronda+1);
-                printbinarray(l0,4);
-                printf("R0:");
-                printbinarray(r0,4);
+              //  printf("RONDA %d:\nL0:",ronda+1);
+                //printbinarray(l0,4);
+                //printf("R0:");
+                //printbinarray(r0,4);
                 copiar(r0, l1, 4);
-                printf("L1:");
-                printbinarray(l1,4);
+                //printf("L1:");
+                //printbinarray(l1,4);
                 Ffun(r0, ki[ronda], fres);
                 XORtam(l0, fres, 4, r1);
-                printf("xorESULT:");
-            printbinarray(r1,4);
+                //printf("xorESULT:");
+            //printbinarray(r1,4);
                 copiar(r1, r0, 4);
                 copiar(l1, l0, 4);
                 memset(r1, 0, 4);
@@ -199,12 +199,12 @@ int main(int argc, char** argv) {
             copiar(r0, l1, 4);
             combinar(l1, r1, bloquesalida);
             /*final permutation*/
-             printf("ANTES IPINV:");
-            printbinarray(bloquesalida,8);
+             //printf("ANTES IPINV:");
+            //printbinarray(bloquesalida,8);
             IPinvfun(bloquesalida, bloquecifrado);
             /*escribir a salida el bloque cifrado*/
-            printf("AL ARCHIVO:");
-            printbinarray(bloquecifrado,8);
+            //printf("AL ARCHIVO:");
+            //printbinarray(bloquecifrado,8);
             for (i = 0; i < 8; i++) {
                 fputc(bloquecifrado[i],output);
             }
@@ -233,10 +233,10 @@ int main(int argc, char** argv) {
             printbinarray(key,8);
         generacionKi(key, ki);
         /*cosillas de memoria*/
-        for(i=0;i<16;i++){
+        /*for(i=0;i<16;i++){
             printf("K%d:",i+1);
             printbinarray(ki[i],6);
-        }
+        }*/
         kiInv = (unsigned char**) malloc(16 * sizeof (unsigned char*));
         if (!kiInv)return -1;
         for (i = 0; i < 16; i++) {
@@ -268,8 +268,8 @@ int main(int argc, char** argv) {
                     bloqueaux[i]=leido;
                 }
             }
-            printf("bloque leido : %s\n",bloqueaux);
-            printbinarray(bloqueaux,8);
+            //printf("bloque leido : %s\n",bloqueaux);
+            //printbinarray(bloqueaux,8);
             memset(bloquesalida, 0, 8);
             IPfun(bloqueaux, bloquesalida);
             dividir(bloquesalida, l0, r0);
@@ -294,8 +294,8 @@ int main(int argc, char** argv) {
             
             IPinvfun(bloquesalida, bloquecifrado);
             /*escribir a salida el bloque cifrado*/
-            printf("AL ARCHIVO:");
-            printbinarray(bloquecifrado,8);
+            //printf("AL ARCHIVO:");
+            //printbinarray(bloquecifrado,8);
             for (i = 0; i < 8; i++) {
                 fputc(bloquecifrado[i],output);
             }

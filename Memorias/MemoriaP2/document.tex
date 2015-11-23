@@ -57,8 +57,8 @@ La probabilidad $P_p(x)$ la calculamos recorriendo el fichero que tiene el texto
 \lstset{language=C, breaklines=true, basicstyle=\footnotesize}
 \begin{lstlisting}
 while((l=fgetc(f))!=EOF){
-	prob[l-65]++;
-	longText++;
+prob[l-65]++;
+longText++;
 }
 \end{lstlisting}
 Luego dividimos ese número entre la longitus del texto.
@@ -67,9 +67,9 @@ La probabilidad $P_p(x|y)$ la calculamos de la misma forma solo que contabilizan
 
 \begin{lstlisting}
 while((c=fgetc(cifrado))!=EOF){
-	p = fgetc(plano);
-	prob[p-65][c-65]++;
-	longText++;
+p = fgetc(plano);
+prob[p-65][c-65]++;
+longText++;
 }
 \end{lstlisting}
 
@@ -89,9 +89,9 @@ Para las claves no equiprobables hemos escrito el siguiente código:
 
 \begin{lstlisting}
 for(i=0; i<2;i++){
-	if((clave>m/2)==0){
-		clave = rand() % m;
-	}else break;
+if((clave>m/2)==0){
+clave = rand() % m;
+}else break;
 }
 \end{lstlisting}
 
@@ -111,14 +111,14 @@ Para implementar el DES hemos creado un fichero que se llama \textit{funcionesDE
 
 La idea de las funciones de permutación es la siguiente:
 
- Guardo el número que leo en la matriz de permutación, que es la posición del bit que va a ir en e 
- 
- Miro si ese bit es un 0 (positions[bit\%8] tiene un 1 en el bit que estoy mirando).
- 
- Si es un 0 no hago nada ya que he inicializado permutation a 0.
- 
- Si no es un cero meto en desired bit un 1 en la posicion apropiada y hago un 
- XOR con el byte que ya hubiera en permutation, de forma que solo cambio el bit deseado
+Guardo el número que leo en la matriz de permutación, que es la posición del bit que va a ir en e 
+
+Miro si ese bit es un 0 (positions[bit\%8] tiene un 1 en el bit que estoy mirando).
+
+Si es un 0 no hago nada ya que he inicializado permutation a 0.
+
+Si no es un cero meto en desired bit un 1 en la posicion apropiada y hago un 
+XOR con el byte que ya hubiera en permutation, de forma que solo cambio el bit deseado
 
 
 \section{Ejercicio X-Estudiar la linealidad de las cajas-S del AES}
