@@ -223,7 +223,7 @@ int main(int argc, char** argv) {
         }
         /*Leemos la clave hexadecimal que nos pasan por argumento*/
         leeClave(argv[3], key);
-        printf("Key:",i);
+        printf("Key:\n");
             printbinarray(key,8);
         generacionKi(key, ki);
         /*cosillas de memoria*/

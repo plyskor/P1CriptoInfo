@@ -472,19 +472,21 @@ for(i=0;i<7;i++){
     {
       permutationP2[t] =0;
     }
+    memset(permutationRot,0,7);
     // a rotarVector le paso toda la cadena junta pero los rota por separado y devuelve lass dos cadenas concatenadas
  
-    //printbinarray(permutationP1,7);
+    printbinarray(permutationP1,7);
     rotarVector(permutationP1, permutationRot, i);
-   // printbinarray(permutationRot,7);
+    printbinarray(permutationRot,7);
    
     for (t = 0; t < 7; t++)
     {
       permutationP1[t] =permutationRot[t];
     }
+    printbinarray(permutationP1,7);
      
     PC2fun(permutationRot, permutationP2);
-   //printbinarray(permutationP2,6);
+   printbinarray(permutationP2,6);
 
     for(t=0 ; t< 6 ; t++){
       ki[i][t] = permutationP2[t];

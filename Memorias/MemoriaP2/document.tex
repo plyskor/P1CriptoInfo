@@ -121,7 +121,16 @@ La idea de las funciones de permutación es la siguiente:
  XOR con el byte que ya hubiera en permutation, de forma que solo cambio el bit deseado
 
 
+\section{Ejercicio X-Estudiar la linealidad de las cajas-S del AES}
 
+Recordamos que una función lineal es aquella función $f$ que cumple que :
+$$f(a + b) = f(a) + f(b)$$
+
+Es sencillo comprobar que las cajas-S no cumplen esto. Hemos creado un sencillo programa al que le pasas dos bytes $a$ , $b$ y aplicamos la caja-S a cada uno de ellos y sumamos los resultados.
+
+A su vez el programa suma $a + b$ y aplica la caja-S a dicha suma y vemos que los resultados son distintos.
+
+La no linealidad de las cajas-S del AES es muy importante ya que las hacen resistentes al criptoanálisis lineal.
 
 \printindex
 \end{document}
