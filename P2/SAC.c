@@ -103,51 +103,40 @@ int main(int argc, char const *argv[])
 	las mismas (1/2)*/
 	unsigned char output = 0, input =0, aux = 0, inputC = 0;
 	double prob1[4], prob0[4], prob1C[4] , prob0C[4] , probsij[16];
-	int  i, t, ind =0;
+	int  i, t, ind =0,c;
 	memset(prob1, 0 , 8);
 	memset(prob0, 0 , 8);
 	memset(prob1C, 0 , 8);
 	memset(prob0C, 0 , 8);
 	memset(probsij, 0 , 16);
 
-	for(t=0; t<64; t++){
-		input = t<<2;
-		//printf("input %d\n", input);
-		//printbincharpad(input);
-		output = cajaSDES_Simp(input, t%8);
-		/*printf("output %d\n", output);
-		printbincharpad(output);
-		printf("\n");*/
-		for (i = 0; i < 4; i++)
-		{
-			//printbincharpad(Positions[i]);
-			aux = output & Positions[i];
-			//printf("aux :");
-			//printbincharpad(aux);
-			//printf("\n");
-			if(aux!= 0){
-				prob1[i]++;
-			}else{
-				prob0[i]++;
-			}	
+	for(c=0; c<8;c++){
+
+
+		for(t=0; t<64; t++){
+			input = t<<2;
+			output = cajaSDES_Simp(input, c);
+			
+			for (i = 0; i < 4; i++)
+			{
+				aux = output & Positions[i];
+				if(aux!= 0){
+					prob1[i]++;
+				}else{
+					prob0[i]++;
+				}	
+			}
+			ind = output >>4;
+			probsij[ind]++;
+			
 		}
-		ind = output >>4;
-		probsij[ind]++;
-		//Complemento input
-		
 	}
 
-	/*for(t=0; t<4;t++){
-		printf("prob0 [%d]: %lf\n", t , prob0[t]);
-		printf("prob1 [%d]: %lf\n", t , prob1[t]);
-		printf("prob0C[%d] : %lf\n",t ,  prob0C[t]);
-		printf("prob1C[%d] : %lf\n",t ,  prob1C[t]);
-	}*/
 
 
 	for(t=0; t<4;t++){
-		prob0[t] = prob0[t]/64;
-		prob1[t] = prob1[t]/64;
+		prob0[t] = prob0[t]/(64 *8);
+		prob1[t] = prob1[t]/(64*8);
 	}
 
 	for(t=0; t<4;t++){
@@ -158,7 +147,7 @@ int main(int argc, char const *argv[])
 
 
 	for(t=0;t<16;t++){
-		printf("probs[%d] :%lf\n",t,probsij[t]/64);
+		printf("probs[%d] :%lf\n",t,probsij[t]/(64*8));
 	}
 	
 
