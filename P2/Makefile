@@ -3,8 +3,10 @@
 #######################
 CC = gcc
 ODIR = obj/
-all: seg-perf desECB SAC linealidadSBoxesDES
+all: seg-perf desECB SAC linealidadSBoxesDES linealidadSBoxesAES
 
+linealidadSBoxesAES: linealidadSBoxesAES.o
+	gcc -o $@ $(ODIR)linealidadSBoxesAES.o
 linealidadSBoxesDES: linealidadSBoxesDES.o funcionesDES.o
 	gcc -o $@ $(ODIR)linealidadSBoxesDES.o $(ODIR)funcionesDES.o
 desECB: desECB.o funcionesDES.o 
@@ -17,6 +19,8 @@ funcionesTextos.o: funcionesTextos.c
 	gcc -c $< -o $(ODIR)funcionesTextos.o
 linealidadSBoxesDES.o: linealidadSBoxesDES.c
 	gcc -c $< -o $(ODIR)linealidadSBoxesDES.o
+linealidadSBoxesAES.o: linealidadSBoxesAES.c
+	gcc -c $< -o $(ODIR)linealidadSBoxesAES.o
 SAC.o: SAC.c
 	gcc -c $< -o $(ODIR)SAC.o
 gClaves.o: gClaves.c
@@ -30,4 +34,4 @@ funcionesDES.o: funcionesDES.c
 desECB.o: desECB.c
 	gcc -c $< -o $(ODIR)desECB.o
 clean:
-	rm -f -R $(ODIR)* seg-perf desECB SAC linealidadSBoxesDES
+	rm -f -R $(ODIR)* seg-perf desECB SAC linealidadSBoxesDES linealidadSBoxesAES
