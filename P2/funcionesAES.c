@@ -49,6 +49,13 @@ void cajaS_AESfun(char *input, char *output){
 	//printf("outS %s\n", output);
 }
 
+void cajaSINV_AESfun(char *input, char *output){
+	
+	int row =(int)hexaAdecimal(input[0]);
+	int column = (int)hexaAdecimal(input[1]);
+	strcpy(output,INVERSE_SBOX[row][column]);
+}
+
 /*void noLinealidadSboxes(char *a, char *b){
 	//función lineal : f(a+b) = f(a) + f(b)
 	char output1[2];
