@@ -217,17 +217,71 @@ Vamos a ver un ejemplo:
 
 
 
-\section{Ejercicio X-Estudiar la linealidad de las cajas-S del AES}
+\section{Ejercicio 3c y 4b -Estudiar la linealidad de las cajas-S del AES y del DES}
+Las cajas de sustitución (cajas S) constituyen la piedra angular en criptografía para lograr que los
+cifradores por bloque exhiban la ineludible propiedad de no linealidad.
 
-Recordamos que una función lineal es aquella función $f$ que cumple que :
-$$f(a + b) = f(a) + f(b)$$
+ En efecto, si la o las cajas S
+de un determinado cifrador por bloque no alcanzan una alta no linealidad, entonces se considera que
+tal algoritmo no podrá ofrecer una seguridad adecuada para impedir que información confidencial
+pueda ser develada por entidades no autorizadas.
 
-Es sencillo comprobar que las cajas-S no cumplen esto. Hemos creado un sencillo programa al que le pasas dos bytes $a$ , $b$ y aplicamos la caja-S a cada uno de ellos y sumamos los resultados.
+Dada su definición, es claro que el número de funciones booleanas elegibles para diseñar una caja S de n bits de entrada y m bits de salida está dado por $2^{m\cdot 2^n}$ , de tal manera que aun para valores moderados de n y m el tamaño del espacio de búsqueda de este problema tiene un tamaño desmesurado.
 
-A su vez el programa suma $a + b$ y aplica la caja-S a dicha suma y vemos que los resultados son distintos.
+Sin embargo, no todas las funciones booleanas son apropiadas para construir buenas cajas S.
 
-La no linealidad de las cajas-S del AES es muy importante ya que las hacen resistentes al criptoanálisis lineal.
+Además de la ya mencionada propiedad de no linealidad,algunas de las principales propiedades criptográficas requeridas para dichas funciones booleanas incluyen: balance, alto grado algebraico, criterio de avalancha estricto, orden de inmunidad, etcétera.
 
+Durante el desarrollo de esta práctica hemos aprovechado las cajas S de los algoritmos DES y AES para crear dos rutinas en C que demuestran la no linealidad de estas funciones booleanas. Estas dos rutinas han sido llamadas \textbf{linealidadSBoxesDES} y \textbf{linealidadSBoxesAES}
+
+ Ambas rutinas reciben como argumento de ejecución "-n N", donde N es un número natural que indica el número de veces
+que se quiere probar la no linealidad. La salida de estos dos programas se incluye a continuación para N=10:
+
+\begin{figure}
+	\includegraphics[width=200pt]{line2.png}
+	\caption{No linealidad del DES}
+\end{figure}
+
+\begin{figure}
+	\includegraphics[width=400pt]{line1.png}
+	\caption{No linealidad del AES}
+\end{figure}
+
+Para comprobar la nonlinealidad de las
+SBOXES en ambos casos, basta con fijarse
+en que se cumple la siguiente igualdad:
+$$f(a)+f(b)=f(a+b)+K$$
+Donde K sería lo que
+llamaríamos constante
+de no linealidad (si
+fuese 0 la función sería
+lineal).
+
+En resumen, los principales criterios para construir unas buenas S-Boxes son los siguientes:
+\begin{itemize}
+	
+
+\item \textbf{Balance}:Esta propiedad es muy deseable para evitar ataques cripto-diferenciales tales como los
+introducidos por A. Shamir contra el algoritmo DES
+\item \textbf{Alta no linealidad}: Esta propiedad reduce el efecto de los ataques por criptoanálisis lineal.
+Como se discutió antes, la no linealidad de una función booleana puede ser calculada
+directamente de la transformada de Walsh-Hadamard
+\item \textbf{Autocorrelación}: Este valor es proporcional al desbalance de todas las derivadas de primer
+orden de la función booleana. Valores pequeños son considerados como buenos mientras que un
+valor grande es considerado un símbolo de debilidad.
+Las funciones curvas gozan de una autocorrelación mínima, por lo que optimizan esta propiedad.• Indicador absoluto: Indicador absoluto de una función booleana denotado por M(f) está dado por
+$|r_max|$ el máximo valor absoluto en $r_{\widehat{f}}(s)$ . Se considera que una función booleana con un M(f)
+pequeño es criptográficamente deseable. Nuevamente las funciones curvas son las mejores, ya
+que su indicador absoluto es 0.
+\item \textbf{Efecto avalancha}: Está relacionado con la autocorrelación y se define con respecto a un bit
+específico de entrada tal que al complementarlo resulta en un cambio en el bit de salida con una
+probabilidad de 1/2. El criterio de avalancha estricto (SAC por sus siglas en inglés), requiere los
+efectos avalancha de todos los bits de entrada. Se dice que una función booleana satisface el
+criterio de avalancha estricto si al complementar un solo bit de entrada resulta en un cambio en un
+bit de salida con una probabilidad de 1/2. Puede demostrarse fácilmente que una función booleana
+f con función de autocorrelación $r_{\widehat{f}}(s)$  , satisface el criterio de avalancha estricto si y sólo si $r_{\widehat{f}}(s)$= 0 para toda s con peso de Hamming H(s)=1
+\end{itemize}
+\newpage
 \section{Ejercicio 3a - SAC y BIC para las cajas-S del DES}
 
 Primero vamos a explicar qué es cada uno de estos principios.
@@ -246,55 +300,56 @@ Primero vamos a explicar qué es cada uno de estos principios.
 	
 	Busca que no haya dependencia entre los bits de salida (si cambia $c_3$, no condiciona a que cambie o no $c_2$) 
 	$$\forall i,j,k \text{  } P(c_ic_j|\overline{b_k}) = P(c_i|\overline{b_k})\cdot P(c_j|\overline{b_k})$$
-	
-	Para comprobar esto hemos hecho un programa que cuenta la probabilidad de 0 y 1 de cada bit de salida de las cajas-S para las 64 posibles entradas.
-	
-	Vemos que las probabilididades son todas $0.5$, por lo que \textbf{se cumple el criterio SAC}.
-	
-	Para BIC no comprobamos que $ P(c_ic_j|\overline{b_k}) = P(c_i|\overline{b_k})\cdot P(c_j|\overline{b_k})$, sino que
-	$$ P(c_ic_jc_kc_l|\overline{b_k}) = P(c_i|\overline{b_k})\cdot P(c_j|\overline{b_k})\cdot P(c_k|\overline{b_k})\cdot P(c_l|\overline{b_k})$$
-
-	Para esto calculamos $P(c_ic_jc_kc_l|\overline{b_k})$, que nos sale $ 0.0625$.
-	
-	Las probabilidades $P(c_i|\overline{b_k})$ ya las habiamos calculado para el SAC y habíamos vist que son todas iguales, por lo que si hacemos $(0.5)^4$ vemos que nos da $0.0625$.
-	
-	Por lo que queda comprobado que también cumple BIC.
-	
-	Adjuntamos dos pantallazos de la salida. En la imagen de la izquierda vemos las probabilidades de cada bit de salida de ser 0 o 1.
-	
-	En la imagen de la derecha vemos las probabilidades $P(c_ic_jc_kc_l|\overline{b_j})$
-	
-	\begin{center}
-		\includegraphics[width=180pt]{SACBICDES1.png}
-		\includegraphics[width=150pt]{SACBICDES2.png}
-	\end{center}
-\end{itemize} 
-\newpage
-\appendix
-\section{Ejercicio 3a(bis) - SAC y BIC para las cajas-S del DES}
-
-A pesar de que los resultados obtenidos en el programa de SAC y BIC de DES son los esperados, creemos que no hemos calculado bien las probabilidades ya que en realidad hemos cogido todas las posibles salidas de las cajas-S.
-
-Hemos intentado pensar el ejercicio de otra forma.
+\end{itemize} 	
 
 Hemos hecho un programa que genera entradas aleatorias para lass cajas-S del DES.
 Recorremos cada una de esas entradas, cambiando uno a uno sus bits y vemos cómo reacciona la salida ante estos cambios.
 
-Los resultados que aparecen por pantalla están en el siguiente formato:
+Los resultados que aparecen por pantalla para comprobar el criterio SAC están en el siguiente formato:
 
 $$prob0[i][j] = ...$$
 $$prob1[i][j] = ...$$
 
 Que son la probabilidad de que el bit i sea 0 o 1 si cambio el bit j.
 
-Los resultados que nos dan son cercanos a $0.5$ pero no tan exactos como en el anterior programa (cosa que creemos, es más comprensible). 
+Los resultados que nos dan son cercanos a $0.5$ pero no son completamente satisfactorios.
 
 \begin{center}
-		\includegraphics[width=180pt]{SACyBIC2PS.png}
+	\includegraphics[width=200pt]{SACBIC_DESmod.png}
 \end{center}
 
-De todas formas tampoco nos termina de convencer este programa ya que , por muchas veces que iteremos, las probabilidades no se acercan cada vez máss a $0.5$, que es lo que pensamos que debería suceder.
+El criterio BIC lo hemos calculado no como pone en la definición sino:
+$$P(c_ic_jc_kc_l|\overline{b_k}) = P(c_i|\overline{b_k})\cdot P(c_j|\overline{b_k})\cdot P(c_k|\overline{b_k})\cdot P(c_l|\overline{b_k})$$
+
+El resultado lo escribimos en el formato $probsij[i][j] = ...$, donde $i$ va de 0 a 15 , que son los posibles valores que puedo escribir con $c_ic_jc_kc_l$ y j va de 0 a 47, que son los bits de la entrada.
+
+\begin{center}
+	\includegraphics[width=200pt]{BICDES.png}
+\end{center}
+
+Vemos que este resultado tampoco es muy bueno ya que nos debería dar un número cercano a $0.0625 = 0.5^4$
 
 
+\section{Ejercicio 4c - SAC y BIC para las cajas-S del AES}
+
+El programa que hemos implementado para comprobar estos criterios es muy parecido al del DES.
+
+En este caso hemos obtenido resultados mucho más satisfactorios.
+
+Los resultados de SAC son los siguientes:
+\begin{center}
+	\includegraphics[width=200pt]{SACAES.png}
+\end{center}
+
+Sabemos que la S-caja del Rijndael  no satisface de manera directa el criterio de avalancha estricto,pero si dentro de una pequeña región de error.
+
+Dicho error es $0.125$ y nuestros resultados están dentro de este error.
+
+Los resultados del BIC son los siguientes:
+\begin{center}
+	\includegraphics[width=200pt]{BICAES.png}
+\end{center}
+
+Vemos que $0.0039 = 0.5^8$ por lo que el AES cumple el principio de BIC.
 \printindex
 \end{document}
