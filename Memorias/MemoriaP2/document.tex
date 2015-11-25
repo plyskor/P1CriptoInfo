@@ -36,7 +36,6 @@
 
 \tableofcontents
 \newpage
-\appendix
 % Contenido.
 \chapter{Ejercicios}
 \section{Ejercicio 1-Seguridad perfecta}
@@ -229,7 +228,7 @@ A su vez el programa suma $a + b$ y aplica la caja-S a dicha suma y vemos que lo
 
 La no linealidad de las cajas-S del AES es muy importante ya que las hacen resistentes al criptoanálisis lineal.
 
-\section{Ejercicio X - SAC y BIC para las cajas-S del DES}
+\section{Ejercicio 3a - SAC y BIC para las cajas-S del DES}
 
 Primero vamos a explicar qué es cada uno de estos principios.
 
@@ -270,6 +269,32 @@ Primero vamos a explicar qué es cada uno de estos principios.
 		\includegraphics[width=150pt]{SACBICDES2.png}
 	\end{center}
 \end{itemize} 
+\newpage
+\appendix
+\section{Ejercicio 3a(bis) - SAC y BIC para las cajas-S del DES}
+
+A pesar de que los resultados obtenidos en el programa de SAC y BIC de DES son los esperados, creemos que no hemos calculado bien las probabilidades ya que en realidad hemos cogido todas las posibles salidas de las cajas-S.
+
+Hemos intentado pensar el ejercicio de otra forma.
+
+Hemos hecho un programa que genera entradas aleatorias para lass cajas-S del DES.
+Recorremos cada una de esas entradas, cambiando uno a uno sus bits y vemos cómo reacciona la salida ante estos cambios.
+
+Los resultados que aparecen por pantalla están en el siguiente formato:
+
+$$prob0[i][j] = ...$$
+$$prob1[i][j] = ...$$
+
+Que son la probabilidad de que el bit i sea 0 o 1 si cambio el bit j.
+
+Los resultados que nos dan son cercanos a $0.5$ pero no tan exactos como en el anterior programa (cosa que creemos, es más comprensible). 
+
+\begin{center}
+		\includegraphics[width=180pt]{SACyBIC2PS.png}
+\end{center}
+
+De todas formas tampoco nos termina de convencer este programa ya que , por muchas veces que iteremos, las probabilidades no se acercan cada vez máss a $0.5$, que es lo que pensamos que debería suceder.
+
 
 \printindex
 \end{document}

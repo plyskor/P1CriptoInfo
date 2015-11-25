@@ -54,7 +54,7 @@ int main(int argc, char const *argv[])
 			nbitsalida = ncaja*4;
 
 			if((nbitsalida%8)<4){
-				printf("ESTOY MIRANDO EL BYE %d , la salida es: %d\n",nbitsalida/8,output[nbitsalida/8]>>4);
+				//printf("ESTOY MIRANDO EL BYE %d , la salida es: %d\n",nbitsalida/8,output[nbitsalida/8]>>4);
 				probsij[output[nbitsalida/8]>>4][h]++;
 				for(t=0; t<4;t++){
 					aux = output[nbitsalida/8] & Positions[t];
@@ -66,7 +66,7 @@ int main(int argc, char const *argv[])
 	
 				}
 			}else{
-				printf("ESTOY MIRANDO EL BYE %d , la salida es: %d\n",nbitsalida/8,15 & output[nbitsalida/8]);
+				//printf("ESTOY MIRANDO EL BYE %d , la salida es: %d\n",nbitsalida/8,15 & output[nbitsalida/8]);
 				probsij[15 & (output[nbitsalida/8])][h]++;
 				for(t=4; t<8;t++){
 					aux = output[nbitsalida/8] & Positions[t];
@@ -97,7 +97,7 @@ int main(int argc, char const *argv[])
 	for(h=0;h<48;h++){
 		for (i = 0; i < 16; i++)
 		{
-			printf("probbsij[%d][%d] = %lf == %lf\n", i,h, probsij[i][h]/1000);
+			printf("probbsij[%d][%d] = %lf\n", i,h, probsij[i][h]/1000);
 		}
 	}
 

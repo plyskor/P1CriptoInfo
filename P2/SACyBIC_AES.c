@@ -58,10 +58,10 @@ int main(int argc, char const *argv[])
 	for (i = 0; i < 256; i++)
 	{
 		intAHexaChar(i , inputS);
-		printf("inputS %s\n", inputS);
+		//printf("inputS %s\n", inputS);
 		memset(hexstring, 0 , 3);
 		cajaS_AESfun(inputS, hexstring);
-		printf("SALIDA_AES : inputS = %s , hexString = %s\n",inputS,hexstring);
+		//printf("SALIDA_AES : inputS = %s , hexString = %s\n",inputS,hexstring);
 		res = charAint(hexstring);
 		probsij[res]++;
 		for (t = 0; t < 8; t++)
