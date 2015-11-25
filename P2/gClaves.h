@@ -11,7 +11,8 @@
 extern "C" {
 #endif
 	
-int generaClavesEquiprobable( int m);
+int generaClaveAEquiprobable( int m);
+int generaClaveBEquiprobable( int m);
 int generaClavesNoEquiprobable(int m);
 
 #ifdef	__c

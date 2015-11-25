@@ -1,6 +1,6 @@
 \select@language {spanish}
 \contentsline {chapter}{\numberline {A}Ejercicios}{2}{appendix.Alph1}
 \contentsline {section}{\numberline {A.1}Ejercicio 1-Seguridad perfecta}{2}{section.Alph1.1}
-\contentsline {section}{\numberline {A.2}Ejercicio 2-Implementaci\IeC {\'o}n del DES}{3}{section.Alph1.2}
-\contentsline {section}{\numberline {A.3}Ejercicio X-Estudiar la linealidad de las cajas-S del AES}{3}{section.Alph1.3}
-\contentsline {section}{\numberline {A.4}Ejercicio X - SAC y BIC para las cajas-S del DES}{4}{section.Alph1.4}
+\contentsline {section}{\numberline {A.2}Ejercicio 2-Implementaci\IeC {\'o}n del DES}{5}{section.Alph1.2}
+\contentsline {section}{\numberline {A.3}Ejercicio X-Estudiar la linealidad de las cajas-S del AES}{6}{section.Alph1.3}
+\contentsline {section}{\numberline {A.4}Ejercicio X - SAC y BIC para las cajas-S del DES}{6}{section.Alph1.4}

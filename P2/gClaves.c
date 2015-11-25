@@ -3,6 +3,8 @@
 #include <string.h>
 #include "gClaves.h"
 
+#include <sys/time.h>
+
 int mcd(int a, int b) {
     int c;
     while (a != b) {
@@ -15,7 +17,12 @@ int mcd(int a, int b) {
     return c;
 }
 
-int generaClavesEquiprobable( int m){
+int generaClaveAEquiprobable( int m){
+  struct timeval t;
+  int pid ; // get it as per your OS
+
+gettimeofday(&t, NULL);
+srand(t.tv_usec * t.tv_sec * pid);
    int i=0,end=0;
       int clave;
         while(end==0){
@@ -25,18 +32,38 @@ int generaClavesEquiprobable( int m){
         }
       return clave;
 }
+
+int generaClaveBEquiprobable( int m){
+  struct timeval t;
+  int pid ; // get it as per your OS
+
+gettimeofday(&t, NULL);
+srand(t.tv_usec * t.tv_sec * pid);
+   int i=0,end=0;
+      int clave;
+       
+            clave = rand() % m;
+           
+        
+      return clave;
+}
+
 int generaClavesNoEquiprobable(int m){
+  struct timeval t;
+  int pid ; // get it as per your OS
+
+gettimeofday(&t, NULL);
+srand(t.tv_usec * t.tv_sec * pid);
    int i,end=0;
       int clave;
          clave = rand() % m;
       // de esta forma es mucho más probable una clave menor que m/2 que una mayor
       while(end==0){
-            for(i=0; i<2;i++){
                     if(clave>(m/2)){
                             clave = rand() % m;
                             if(clave==0)continue;
                     }else break;
-            }
+            
             if(mcd(clave,m)==1)end=1;
         }
       return clave;

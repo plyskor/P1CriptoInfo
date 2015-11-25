@@ -26,7 +26,7 @@ int main(int argc, char const *argv[]){
 	}
 
 	FILE *in;
-	FILE *out,*tratado;
+	FILE *out,*tratado ,*probsOut;
 	FILE *fClaves;
 	int l,i,c;
 	int claves[2];
@@ -54,14 +54,14 @@ int main(int argc, char const *argv[]){
 		if((l=trataCaracter(l))==-1) continue;
                 fputc((l+65),tratado);
 		if(strcmp(argv[1],"-P")==0){
-			for (i = 0; i < 2; ++i)
-			{
-				claves[i]=generaClavesEquiprobable(26);
-				
-			}
+			
+				claves[0]=generaClaveAEquiprobable(26);
+				claves[1]=generaClaveBEquiprobable(26);
+			
 
 		}else if(strcmp(argv[1],"-I")==0){
-			for (i = 0; i < 2; ++i)
+			
+			for (i = 0; i < 2; i++)
 			{
 				claves[i]=generaClavesNoEquiprobable(26);
 				
@@ -105,19 +105,27 @@ int main(int argc, char const *argv[]){
 	Llamar a la función de las probabilidades
 	Irlo escribiendo todo en out
 	*/
+
+	 if(!(probsOut=fopen("probabilidades.out","w"))){
+		printf("Fallo al abrir archivo\n");
+		return -1;
+	}
         car=65;
         for(i=0;i<26;i++){
             printf("Pp(%c):%lf\n",car+i,p[i]);
+            fprintf(probsOut,"Pp(%c):%lf\n",car+i,p[i]);
         }
         
         for(i=0;i<26;i++){
             for(m=0;m<26;m++){
             printf("Pp(%c|%c):%lf\n",car+i,car+m,pp[i][m]);
+            fprintf(probsOut, "Pp(%c|%c):%lf\n",car+i,car+m,pp[i][m]);
         }
         }
 	fclose(in);
 	fclose(out);
 	fclose(fClaves);
+	fclose(probsOut);
         free(p);
         free(pp);
 	return 0;
